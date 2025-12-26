@@ -4,7 +4,7 @@ require('dotenv').config();
 class GeminiService {
     constructor() {
         if (!process.env.GEMINI_API_KEY) {
-            throw new Error('GEMINI_API_KEY is not set in environment variables');
+            console.log('GEMINI_API_KEY is not set in environment variables');
         }
         this.apiKey = process.env.GEMINI_API_KEY;
         this.model = process.env.GEMINI_MODEL || 'gemini-1.5-pro';
