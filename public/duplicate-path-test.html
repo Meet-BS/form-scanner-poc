@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Path Test - Form Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .section-title {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .info-box h3 {
+            color: #1565c0;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .info-box ul {
+            margin-left: 20px;
+            color: #1565c0;
+            line-height: 1.8;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .warning-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .warning-box p {
+            color: #856404;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Duplicate Path & Content Cache Test</h1>
+            <p class="subtitle">
+                Testing form scanner's ability to detect duplicate URLs and cache identical content across different URLs
+            </p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">📋 Test Scenario</h2>
+            <p class="description">
+                This page has <strong>three different buttons/links</strong> that lead to forms:
+            </p>
+            <ul style="margin-left: 20px; color: #555; line-height: 1.8; margin-bottom: 20px;">
+                <li><strong>Path 1 & 2:</strong> Both point to <code>/simple-form.html</code> (same URL, same form)</li>
+                <li><strong>Path 3:</strong> Points to <code>/contact-us</code> (different URL, but serves the SAME HTML content)</li>
+            </ul>
+            <p class="description">
+                The form scanner should detect that all three paths lead to the same form content and only extract it once.
+            </p>
+
+            <div class="button-container">
+                <a href="/simple-form.html" class="btn btn-primary">
+                    🚀 Path 1: /simple-form.html
+                </a>
+                <a href="/simple-form.html" class="btn btn-secondary">
+                    🎯 Path 2: /simple-form.html
+                </a>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ What This Tests:</h3>
+                <ul>
+                    <li><strong>URL Deduplication:</strong> Scanner should recognize when multiple links point to the same URL (Path 1 & 2)</li>
+                    <li><strong>Content-Based Caching:</strong> Scanner should detect when different URLs serve identical HTML content (Path 3)</li>
+                    <li><strong>Efficient Crawling:</strong> Scanner should only fetch and analyze each unique form once, regardless of URL variations</li>
+                    <li><strong>Real-World Scenario:</strong> Websites often have multiple URLs serving the same content (aliases, redirects, different routes)</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Expected Scanner Behavior:</strong>
+                <p>
+                    The scanner should identify all three buttons/links on this page:
+                </p>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.6;">
+                    <li>Recognize Path 1 & 2 point to same URL → fetch once</li>
+                    <li>Recognize Path 3 serves identical HTML content → use cached analysis</li>
+                    <li>Final report should show <strong>1 form detected</strong>, not 3 forms</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">📊 Target Form Details</h2>
+            <p class="description">
+                All three buttons lead to the same simple contact form with the following fields:
+            </p>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <h3 style="color: #333; margin-bottom: 15px;">Simple Contact Form (3 fields)</h3>
+                <ul style="margin-left: 20px; color: #555; line-height: 1.8;">
+                    <li><code>name</code> - Text input (required)</li>
+                    <li><code>email</code> - Email input (required)</li>
+                    <li><code>message</code> - Textarea (required)</li>
+                </ul>
+                <p style="margin-top: 15px; color: #666;">
+                    <strong>Submit action:</strong> POST to <code>/api/submit-simple</code>
+                </p>
+                <p style="margin-top: 10px; color: #666;">
+                    <strong>Note:</strong> <code>/contact-us</code> serves the exact same HTML as <code>/simple-form.html</code>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">🧪 How to Test</h2>
+            <div class="description">
+                <ol style="margin-left: 20px; line-height: 2; color: #555;">
+                    <li>Use the scanner-test.html page in URL mode</li>
+                    <li>Enter: <code>http://localhost:3000/duplicate-path-test.html</code></li>
+                    <li>Click "Extract Forms" or "Complete Analysis"</li>
+                    <li>Verify the scanner detects <strong>1 form</strong> (not 2)</li>
+                    <li>Check that the scanner visited <code>/simple-form.html</code> only once</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

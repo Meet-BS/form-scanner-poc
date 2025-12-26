@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Scanner Test Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .loading {
+            display: none;
+            color: #667eea;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .loading.active {
+            display: block;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        .result-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .comparison {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .comparison-row:first-child {
+            font-weight: bold;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .match {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .mismatch {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .form-details {
+            margin-top: 10px;
+        }
+        .form-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+        }
+        .form-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .field-list {
+            margin-left: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .accuracy-meter {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .accuracy-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #5cb85c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to home</a>
+            <h1>🔍 Form Scanner Test Interface</h1>
+            <p class="subtitle">Test the accuracy of AI-powered form extraction using Gemini API</p>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-bottom: 20px;">Input Source</h2>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600;">
+                    <input type="radio" name="inputType" value="local" checked> Use Local Test Page
+                </label>
+                <label style="display: block; font-weight: 600;">
+                    <input type="radio" name="inputType" value="url"> Analyze External URL
+                </label>
+            </div>
+            
+            <div id="urlInput" style="display: none; margin-top: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Website URL:</label>
+                <input type="text" id="websiteUrl" placeholder="https://example.com" 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 16px;">
+                <p style="margin-top: 8px; color: #666; font-size: 14px;">
+                    Enter any website URL to analyze its forms
+                </p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-bottom: 20px;">Test Actions</h2>
+            <div class="button-group">
+                <button id="extractBtn">1. Extract Forms Only</button>
+                <button id="completeBtn">2. Complete Analysis (Extract + Generate Values)</button>
+                <button id="clearBtn">Clear Results</button>
+            </div>
+            <div class="loading" id="loading">⏳ Processing... This may take 10-30 seconds...</div>
+        </div>
+
+        <div class="results" id="results"></div>
+    </div>
+
+    <script>
+        const EXPECTED = {
+            totalForms: 13,
+            totalFields: 89,
+            forms: {
+                'traditionalForm': 3,
+                'formlessContainer': 4,
+                'multiActionForm': 3,
+                'tableForm': 3,
+                'dynamicForm': 2,
+                'inlineEditContainer': 3,
+                'autoSubmit': 3,
+                'hiddenForm': 4,
+                'allTypesForm': 20,
+                'dataAttrContainer': 5,
+                'modalForm': 5,
+                'redirectForm': 5,
+                'successModalForm': 6
+            }
+        };
+
+        async function testFormExtraction() {
+            console.log('🎬 Starting form extraction test...');
+            showLoading(true);
+            clearResults();
+
+            try {
+                const htmlContent = await getHtmlContent();
+                console.log('📄 HTML loaded, length:', htmlContent.length);
+
+                // Extract forms
+                console.log('🔍 Calling extract-forms API...');
+                const response = await fetch('/api/scanner/extract-forms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ htmlContent })
+                });
+
+                console.log('Extract forms response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Extract forms result:', result);
+
+                if (result.success) {
+                    displayExtractionResults(result.data);
+                } else {
+                    displayError(result.error);
+                }
+            } catch (error) {
+                console.error('❌ Error in testFormExtraction:', error);
+                displayError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function testCompleteAnalysis() {
+            console.log('🎬 Starting complete analysis test...');
+            showLoading(true);
+            clearResults();
+
+            try {
+                const htmlContent = await getHtmlContent();
+                console.log('📄 HTML loaded, length:', htmlContent.length);
+
+                // Complete analysis
+                console.log('🎯 Calling analyze-complete API...');
+                const response = await fetch('/api/scanner/analyze-complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ htmlContent })
+                });
+
+                console.log('Complete analysis response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Complete analysis result:', result);
+
+                if (result.success) {
+                    displayCompleteResults(result.data);
+                } else {
+                    displayError(result.error);
+                }
+            } catch (error) {
+                console.error('❌ Error in testCompleteAnalysis:', error);
+                displayError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function displayExtractionResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            const accuracy = calculateAccuracy(data);
+            
+            resultsDiv.innerHTML = `
+                <div class="result-section">
+                    <h3>📊 Accuracy Analysis</h3>
+                    <div class="accuracy-meter">
+                        <div class="accuracy-bar" style="width: ${accuracy}%">${accuracy}%</div>
+                    </div>
+                    
+                    ${data.performance ? `
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #4caf50;">
+                            <h4 style="margin-bottom: 10px; color: #2e7d32;">⚡ Performance Metrics</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                                <div><strong>Extraction Time:</strong> ${data.performance.extractionTime || data.performance.timeTaken || 'N/A'}ms</div>
+                                ${data.performance.valueGenerationTime ? `<div><strong>Value Generation:</strong> ${data.performance.valueGenerationTime}ms</div>` : ''}
+                                ${data.performance.totalTime ? `<div><strong>Total Time:</strong> ${data.performance.totalTime}ms</div>` : ''}
+                                ${data.performance.averageTimePerForm ? `<div><strong>Avg per Form:</strong> ${data.performance.averageTimePerForm}ms</div>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${data.usage || data.totalUsage ? `
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #2196F3;">
+                            <h4 style="margin-bottom: 10px; color: #1565c0;">💰 Token Usage & Cost</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                                ${data.totalUsage ? `
+                                    <div><strong>Input Tokens:</strong> ${data.totalUsage.inputTokens.toLocaleString()}</div>
+                                    <div><strong>Output Tokens:</strong> ${data.totalUsage.outputTokens.toLocaleString()}</div>
+                                    <div><strong>Total Tokens:</strong> ${data.totalUsage.totalTokens.toLocaleString()}</div>
+                                    <div><strong>Input Cost:</strong> \$${data.totalUsage.inputCost.toFixed(6)}</div>
+                                    <div><strong>Output Cost:</strong> \$${data.totalUsage.outputCost.toFixed(6)}</div>
+                                    <div><strong>Total Cost:</strong> <span style="font-size: 18px; color: #1565c0; font-weight: bold;">\$${data.totalUsage.totalCost.toFixed(6)}</span></div>
+                                ` : `
+                                    <div><strong>Input Tokens:</strong> ${data.usage.inputTokens.toLocaleString()}</div>
+                                    <div><strong>Output Tokens:</strong> ${data.usage.outputTokens.toLocaleString()}</div>
+                                    <div><strong>Total Tokens:</strong> ${data.usage.totalTokens.toLocaleString()}</div>
+                                    <div><strong>Input Cost:</strong> \$${data.usage.inputCost.toFixed(6)}</div>
+                                    <div><strong>Output Cost:</strong> \$${data.usage.outputCost.toFixed(6)}</div>
+                                    <div><strong>Total Cost:</strong> <span style="font-size: 18px; color: #1565c0; font-weight: bold;">\$${data.usage.totalCost.toFixed(6)}</span></div>
+                                `}
+                            </div>
+                            <p style="margin-top: 10px; font-size: 12px; color: #666;">
+                                Pricing: Input $0.00125/1K tokens | Output $0.005/1K tokens (Gemini 1.5 Pro)
+                            </p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="stats">
+                        <div class="stat-box">
+                            <div class="stat-number ${data.summary.totalFunctionalForms === EXPECTED.totalForms ? 'match' : 'mismatch'}">
+                                ${data.summary.totalFunctionalForms}
+                            </div>
+                            <div class="stat-label">Forms Found</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 5px;">Expected: ${EXPECTED.totalForms}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number ${data.summary.totalFields === EXPECTED.totalFields ? 'match' : 'mismatch'}">
+                                ${data.summary.totalFields}
+                            </div>
+                            <div class="stat-label">Fields Found</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 5px;">Expected: ${EXPECTED.totalFields}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">${data.summary.formsIgnored || 0}</div>
+                            <div class="stat-label">Forms Ignored</div>
+                            <div style="font-size: 12px; color: #999; margin-top: 5px;">Expected: 3+</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">${data.summary.confidence || 'N/A'}</div>
+                            <div class="stat-label">AI Confidence</div>
+                        </div>
+                    </div>
+                    <div class="comparison">
+                        <h4>Form-by-Form Comparison</h4>
+                        ${generateFormComparison(data.forms)}
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h3>📝 Extracted Forms</h3>
+                    <div class="form-details">
+                        ${data.forms.map((form, index) => `
+                            <div class="form-card">
+                                <h4>${index + 1}. ${form.formId} (${form.formType})</h4>
+                                <p><strong>Selector:</strong> <code>${form.selector}</code></p>
+                                <p><strong>Submit:</strong> <code>${form.submitSelector}</code> (${form.submitType})</p>
+                                <p><strong>Fields:</strong> ${form.fields.length}</p>
+                                <ul class="field-list">
+                                    ${form.fields.map(field => `
+                                        <li><strong>${field.fieldName}</strong> (${field.fieldType})${field.required ? ' *' : ''} - <code>${field.selector}</code></li>
+                                    `).join('')}
+                                </ul>
+                                ${form.specialFeatures && form.specialFeatures.length > 0 ? 
+                                    `<p><strong>Special Features:</strong> ${form.specialFeatures.join(', ')}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayCompleteResults(data) {
+            displayExtractionResults(data);
+            
+            // Add generated values section
+            const resultsDiv = document.getElementById('results');
+            const valuesSection = `
+                <div class="result-section">
+                    <h3>🎯 Generated Field Values</h3>
+                    <div class="form-details">
+                        ${data.forms.map((form, index) => `
+                            <div class="form-card">
+                                <h4>${index + 1}. ${form.formId}</h4>
+                                ${form.valueGenerationPerformance ? `
+                                    <div style="background: #f0f0f0; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-size: 13px;">
+                                        <div style="margin-bottom: 5px;">⚡ <strong>Time:</strong> ${form.valueGenerationPerformance.timeTaken}ms</div>
+                                        ${form.valueGenerationPerformance.usage ? `
+                                            <div><strong>Tokens:</strong> ${form.valueGenerationPerformance.usage.inputTokens} in / ${form.valueGenerationPerformance.usage.outputTokens} out (Total: ${form.valueGenerationPerformance.usage.totalTokens})</div>
+                                            <div><strong>Cost:</strong> \\$${form.valueGenerationPerformance.usage.totalCost.toFixed(6)}</div>
+                                        ` : ''}
+                                    </div>
+                                ` : ''}
+                                ${form.suggestedValues ? `
+                                    <pre style="background: #f8f9fa; color: #333; padding: 15px;">${JSON.stringify(form.suggestedValues, null, 2)}</pre>
+                                    ${form.validationStatus ? `
+                                        <p style="margin-top: 10px;">
+                                            <strong>Validations Satisfied:</strong> 
+                                            <span class="${form.validationStatus.allValidationsSatisfied ? 'match' : 'mismatch'}">
+                                                ${form.validationStatus.allValidationsSatisfied ? '✓ Yes' : '✗ No'}
+                                            </span>
+                                        </p>
+                                        ${form.validationStatus.notes ? `<p><strong>Notes:</strong> ${form.validationStatus.notes}</p>` : ''}
+                                    ` : ''}
+                                ` : `
+                                    <p style="color: #dc3545;">Failed to generate values: ${form.validationStatus?.error || 'Unknown error'}</p>
+                                `}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.insertAdjacentHTML('beforeend', valuesSection);
+        }
+
+        function generateFormComparison(forms) {
+            let html = '<div class="comparison-row"><div>Form ID</div><div>Expected Fields</div><div>Found Fields</div></div>';
+            
+            for (const [formId, expectedCount] of Object.entries(EXPECTED.forms)) {
+                const foundForm = forms.find(f => f.formId === formId || f.selector.includes(formId));
+                const foundCount = foundForm ? foundForm.fields.length : 0;
+                const isMatch = foundCount === expectedCount;
+                
+                html += `
+                    <div class="comparison-row">
+                        <div>${formId}</div>
+                        <div>${expectedCount}</div>
+                        <div class="${isMatch ? 'match' : 'mismatch'}">${foundCount}</div>
+                    </div>
+                `;
+            }
+            
+            return html;
+        }
+
+        function calculateAccuracy(data) {
+            let score = 0;
+            
+            // Form count accuracy (40%)
+            const formAccuracy = Math.min(1, data.summary.totalFunctionalForms / EXPECTED.totalForms);
+            score += formAccuracy * 40;
+            
+            // Field count accuracy (40%)
+            const fieldAccuracy = Math.min(1, data.summary.totalFields / EXPECTED.totalFields);
+            score += fieldAccuracy * 40;
+            
+            // Ignored fake forms (20%)
+            if (data.summary.formsIgnored >= 3) {
+                score += 20;
+            } else {
+                score += (data.summary.formsIgnored / 3) * 20;
+            }
+            
+            return Math.round(score);
+        }
+
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="result-section" style="border-left-color: #dc3545;">
+                    <h3 style="color: #dc3545;">❌ Error</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+            document.querySelectorAll('button').forEach(btn => btn.disabled = show);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function getInputType() {
+            return document.querySelector('input[name="inputType"]:checked').value;
+        }
+
+        async function getHtmlContent() {
+            const inputType = getInputType();
+            
+            if (inputType === 'url') {
+                const url = document.getElementById('websiteUrl').value.trim();
+                if (!url) {
+                    throw new Error('Please enter a website URL');
+                }
+                
+                console.log('🌐 Fetching HTML from URL:', url);
+                const response = await fetch('/api/scanner/fetch-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch URL');
+                }
+                
+                const data = await response.json();
+                return data.data.htmlContent;
+            } else {
+                console.log('📄 Fetching local test page HTML...');
+                const pageResponse = await fetch('/api/scanner/test-page');
+                
+                if (!pageResponse.ok) {
+                    throw new Error(`HTTP error! status: ${pageResponse.status}`);
+                }
+                
+                const pageData = await pageResponse.json();
+                if (!pageData.success) {
+                    throw new Error('Failed to load test page');
+                }
+                
+                return pageData.data.htmlContent;
+            }
+        }
+
+        // Attach event listeners when DOM is ready
+        document.getElementById('extractBtn').addEventListener('click', testFormExtraction);
+        document.getElementById('completeBtn').addEventListener('click', testCompleteAnalysis);
+        document.getElementById('clearBtn').addEventListener('click', clearResults);
+        
+        // Toggle URL input visibility
+        document.querySelectorAll('input[name="inputType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                document.getElementById('urlInput').style.display = 
+                    e.target.value === 'url' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

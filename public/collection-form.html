@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection / Repeated Subforms</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ecfdf3;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; color: #14532d; }
+    .subtitle { font-size: 14px; color: #166534; margin-bottom: 18px; }
+    .note {
+      background: #bbf7d0;
+      border-radius: 12px;
+      border: 1px dashed #4ade80;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #14532d;
+      margin-bottom: 20px;
+    }
+    form { background: #f0fdf4; border-radius: 14px; border: 1px solid #86efac; padding: 16px 14px 18px; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #166534; font-weight: 600; }
+    input, select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #bbf7d0;
+      font-size: 13px;
+    }
+    input:focus, select:focus { outline: none; border-color: #22c55e; box-shadow: 0 0 0 1px #22c55e44; }
+    .passenger-card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px dashed #86efac;
+      padding: 12px 12px 14px;
+      margin-top: 10px;
+      position: relative;
+    }
+    .passenger-card h3 {
+      font-size: 13px;
+      color: #15803d;
+      margin-bottom: 6px;
+    }
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 11px;
+      border: none;
+      cursor: pointer;
+    }
+    .actions { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .btn {
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-add { background: #bbf7d0; color: #14532d; }
+    .btn-submit { background: #22c55e; color: #ecfdf3; }
+    .message {
+      margin-top: 14px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    .message.success { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .message.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#166534;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Travel Booking with Passengers</h1>
+  <p class="subtitle">Tests scanners that must understand repeated groups (collections) of fields within a single form.</p>
+
+  <div class="note">
+    Each passenger group repeats the same set of fields. The scanner should treat them as an array of objects (passengers[0], passengers[1], ...).
+  </div>
+
+  <form id="collectionForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="trip_origin">Origin *</label>
+        <input id="trip_origin" name="origin" required>
+      </div>
+      <div class="form-group">
+        <label for="trip_destination">Destination *</label>
+        <input id="trip_destination" name="destination" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="trip_date">Departure date *</label>
+        <input id="trip_date" name="departureDate" type="date" required>
+      </div>
+      <div class="form-group">
+        <label for="trip_class">Class</label>
+        <select id="trip_class" name="travelClass">
+          <option value="economy">Economy</option>
+          <option value="business">Business</option>
+          <option value="first">First</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="passengersContainer"></div>
+
+    <div class="actions">
+      <button type="button" class="btn btn-add" id="addPassengerBtn">+ Add passenger</button>
+      <button type="submit" class="btn btn-submit">Submit booking</button>
+    </div>
+
+    <div id="collectionMessage" class="message"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const container = document.getElementById('passengersContainer');
+  const addBtn = document.getElementById('addPassengerBtn');
+  const form = document.getElementById('collectionForm');
+  const msg = document.getElementById('collectionMessage');
+  let passengerIndex = 0;
+
+  function createPassengerCard(index) {
+    const card = document.createElement('div');
+    card.className = 'passenger-card';
+    card.dataset.index = index;
+
+    const title = document.createElement('h3');
+    title.textContent = 'Passenger ' + (index + 1);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-btn';
+    removeBtn.textContent = 'Remove';
+    removeBtn.addEventListener('click', () => {
+      card.remove();
+      updateTitles();
+    });
+
+    const row1 = document.createElement('div');
+    row1.className = 'form-row';
+    const fg1 = document.createElement('div');
+    fg1.className = 'form-group';
+    const fg2 = document.createElement('div');
+    fg2.className = 'form-group';
+
+    const l1 = document.createElement('label');
+    l1.textContent = 'Full name *';
+    const i1 = document.createElement('input');
+    i1.name = `passengers[${index}].fullName`;
+    i1.required = true;
+
+    const l2 = document.createElement('label');
+    l2.textContent = 'Age *';
+    const i2 = document.createElement('input');
+    i2.name = `passengers[${index}].age`;
+    i2.type = 'number';
+    i2.min = '0';
+    i2.required = true;
+
+    fg1.appendChild(l1); fg1.appendChild(i1);
+    fg2.appendChild(l2); fg2.appendChild(i2);
+    row1.appendChild(fg1); row1.appendChild(fg2);
+
+    const row2 = document.createElement('div');
+    row2.className = 'form-row';
+    const fg3 = document.createElement('div');
+    fg3.className = 'form-group';
+    const fg4 = document.createElement('div');
+    fg4.className = 'form-group';
+
+    const l3 = document.createElement('label');
+    l3.textContent = 'Seat preference';
+    const i3 = document.createElement('input');
+    i3.name = `passengers[${index}].seatPreference`;
+
+    const l4 = document.createElement('label');
+    l4.textContent = 'Loyalty number';
+    const i4 = document.createElement('input');
+    i4.name = `passengers[${index}].loyaltyNumber`;
+
+    fg3.appendChild(l3); fg3.appendChild(i3);
+    fg4.appendChild(l4); fg4.appendChild(i4);
+    row2.appendChild(fg3); row2.appendChild(fg4);
+
+    card.appendChild(title);
+    card.appendChild(removeBtn);
+    card.appendChild(row1);
+    card.appendChild(row2);
+
+    return card;
+  }
+
+  function updateTitles() {
+    const cards = Array.from(container.querySelectorAll('.passenger-card'));
+    cards.forEach((card, i) => {
+      card.querySelector('h3').textContent = 'Passenger ' + (i + 1);
+    });
+  }
+
+  addBtn.addEventListener('click', () => {
+    const card = createPassengerCard(passengerIndex++);
+    container.appendChild(card);
+    updateTitles();
+  });
+
+  // Start with one passenger by default
+  addBtn.click();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      const res = await fetch('/api/submit-collection-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      msg.style.display = 'block';
+      msg.className = 'message ' + (result.success ? 'success' : 'error');
+      msg.textContent = (result.success ? '✅ ' : '❌ ') + (result.message || 'Submission result');
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.className = 'message error';
+      msg.textContent = '❌ Network error while submitting booking.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

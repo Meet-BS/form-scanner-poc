@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Form Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #f5576c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .button-section {
+            background: white;
+            border-radius: 12px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .section-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .btn-popup {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .btn-tab {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #f5576c;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 6px;
+            text-align: left;
+        }
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .info-box ul li {
+            margin-bottom: 8px;
+        }
+        .field-list {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 6px;
+            text-align: left;
+        }
+        .field-list strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .field-list code {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 14px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 New Tab Form Test</h1>
+            <p class="subtitle">
+                Testing form detection for forms that open in new tabs.
+                This simulates real-world scenarios where forms are accessed via button clicks.
+            </p>
+        </div>
+
+        <div class="button-section">
+            <h2 class="section-title">Open Registration Form</h2>
+            <p class="description">
+                Click the button below to open the registration form in a new tab
+            </p>
+            
+            <div class="button-container">
+                <button class="btn btn-tab" onclick="openNewTab()">
+                    📑 Open in New Tab
+                </button>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ What This Tests:</h3>
+                <ul>
+                    <li><strong>New Tab:</strong> Opens the registration form in a new browser tab</li>
+                    <li><strong>Form Detection:</strong> Tests if AI scanners can detect forms that are accessed via button clicks rather than being directly visible on the page</li>
+                    <li><strong>Real-World Scenario:</strong> Many websites use modal dialogs, popup windows, or new tabs to display forms</li>
+                </ul>
+            </div>
+
+            <div class="field-list">
+                <strong>📋 Form Fields in Popup (9 total):</strong>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-top: 10px;">
+                    <div>1. <code>firstName</code> (required)</div>
+                    <div>2. <code>lastName</code> (required)</div>
+                    <div>3. <code>email</code> (required)</div>
+                    <div>4. <code>phone</code> (required)</div>
+                    <div>5. <code>company</code></div>
+                    <div>6. <code>jobTitle</code></div>
+                    <div>7. <code>country</code> (required)</div>
+                    <div>8. <code>newsletter</code> (checkbox)</div>
+                    <div>9. <code>terms</code> (checkbox, required)</div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 20px; border-left-color: #28a745; background: #d4edda;">
+                <h3>✅ Expected Scanner Behavior:</h3>
+                <ul style="color: #155724;">
+                    <li>Scanner should detect the buttons that trigger form opening</li>
+                    <li>Scanner should be able to follow the link/action to discover the form</li>
+                    <li>Scanner should identify all 9 fields in the popup form</li>
+                    <li>Scanner should recognize required vs optional fields</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPopupWindow() {
+            const width = 700;
+            const height = 800;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+            
+            window.open(
+                '/popup-form.html',
+                'popupRegistrationForm',
+                `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+            );
+        }
+        
+        function openNewTab() {
+            window.open('/popup-form.html', '_blank');
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + P for popup
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                openPopupWindow();
+            }
+            // Ctrl/Cmd + T for new tab (browser default already exists)
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #11998e;
+        }
+        button {
+            background: #11998e;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background: #0d7a6f;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #11998e;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        <h1>Conditional Registration Form</h1>
+        <p style="color: #666; margin-bottom: 30px;">Fields appear based on your selections. Must be 18+ to register.</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullname">Full Name *</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age *</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Account Type *</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="accountType" value="personal" required>
+                        Personal
+                    </label>
+                    <label>
+                        <input type="radio" name="accountType" value="business">
+                        Business
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Business fields - shown only for business account -->
+            <div id="businessFields" class="hidden">
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input type="text" id="companyName" name="companyName">
+                </div>
+                
+                <div class="form-group">
+                    <label for="taxId">Tax ID *</label>
+                    <input type="text" id="taxId" name="taxId">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="country">Country *</label>
+                <select id="country" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="us">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="ca">Canada</option>
+                    <option value="au">Australia</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Other country field - shown only when "Other" is selected -->
+            <div id="otherCountryField" class="hidden">
+                <div class="form-group">
+                    <label for="otherCountry">Please specify country *</label>
+                    <input type="text" id="otherCountry" name="otherCountry">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="newsletter" value="yes">
+                    Subscribe to newsletter
+                </label>
+            </div>
+            
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    
+    <script>
+        // Show/hide business fields
+        document.querySelectorAll('input[name="accountType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const businessFields = document.getElementById('businessFields');
+                const companyName = document.getElementById('companyName');
+                const taxId = document.getElementById('taxId');
+                
+                if (e.target.value === 'business') {
+                    businessFields.classList.remove('hidden');
+                    companyName.required = true;
+                    taxId.required = true;
+                } else {
+                    businessFields.classList.add('hidden');
+                    companyName.required = false;
+                    taxId.required = false;
+                }
+            });
+        });
+        
+        // Show/hide other country field
+        document.getElementById('country').addEventListener('change', (e) => {
+            const otherCountryField = document.getElementById('otherCountryField');
+            const otherCountryInput = document.getElementById('otherCountry');
+            
+            if (e.target.value === 'other') {
+                otherCountryField.classList.remove('hidden');
+                otherCountryInput.required = true;
+            } else {
+                otherCountryField.classList.add('hidden');
+                otherCountryInput.required = false;
+            }
+        });
+        
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/api/submit-conditional', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                const messageDiv = document.getElementById('message');
+                
+                if (result.success) {
+                    messageDiv.textContent = result.message;
+                    messageDiv.className = 'message success';
+                    messageDiv.style.display = 'block';
+                    e.target.reset();
+                } else {
+                    messageDiv.textContent = result.message;
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'An error occurred. Please try again.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

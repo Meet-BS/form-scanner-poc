@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Scanner Test Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .form-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        .form-card h3 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        .form-card p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Form Scanner Test Suite</h1>
+        <p class="subtitle">A collection of test forms with varying complexity, validation rules, and distracting content</p>
+        
+        <div class="form-grid">
+            <a href="/simple-form" class="form-card">
+                <h3>Simple Form</h3>
+                <p>Basic contact form with name, email, and message fields. Always succeeds.</p>
+                <span class="badge">EASY</span>
+            </a>
+            
+            <a href="/conditional-form" class="form-card">
+                <h3>Conditional Form</h3>
+                <p>Fields appear/hide based on selections. Age validation included.</p>
+                <span class="badge">MEDIUM</span>
+            </a>
+            
+            <a href="/complex-form" class="form-card">
+                <h3>Complex Form</h3>
+                <p>Job application with multiple field types, file uploads, and random failures.</p>
+                <span class="badge">HARD</span>
+            </a>
+            
+            <a href="/multi-step-form" class="form-card">
+                <h3>Multi-Step Form</h3>
+                <p>Wizard-style form with progressive disclosure and step validation.</p>
+                <span class="badge">HARD</span>
+            </a>
+            
+            <a href="/noisy-form" class="form-card">
+                <h3>Noisy Form</h3>
+                <p>Form buried in marketing content, images, and distracting elements.</p>
+                <span class="badge">EXTREME</span>
+            </a>
+            
+            <a href="/all-forms" class="form-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                <h3>🧪 All Forms Suite</h3>
+                <p>13 different forms in one page: traditional, formless, modal, redirects, success modals, table-based, dynamic, and more!</p>
+                <span class="badge" style="background: #ff6b6b;">ULTIMATE</span>
+            </a>
+
+            <a href="/wizard-form" class="form-card">
+                <h3>Multi-Step Wizard (Standalone)</h3>
+                <p>Single logical form split across multiple steps with hidden sections and a review screen.</p>
+                <span class="badge">HARD</span>
+            </a>
+
+            <a href="/shadow-dom-form" class="form-card">
+                <h3>Shadow DOM Form</h3>
+                <p>Form fields fully inside a web component's shadowRoot to test deep DOM traversal.</p>
+                <span class="badge">ADVANCED</span>
+            </a>
+
+            <a href="/nested-form" class="form-card">
+                <h3>Deeply Nested Form</h3>
+                <p>Single form where inputs live several container levels down inside accordions and nested panels.</p>
+                <span class="badge">ADVANCED</span>
+            </a>
+
+            <a href="/collection-form" class="form-card">
+                <h3>Collection / Repeated Groups</h3>
+                <p>Travel booking with repeatable passenger groups to test array-style field naming.</p>
+                <span class="badge">ADVANCED</span>
+            </a>
+
+            <a href="/aria-form" class="form-card">
+                <h3>ARIA-Driven Form</h3>
+                <p>Accessible form where semantics come from aria-label / aria-labelledby / aria-describedby.</p>
+                <span class="badge">ADVANCED</span>
+            </a>
+            
+            <!-- <a href="/scanner-test" class="form-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                <h3>🤖 AI Scanner Test</h3>
+                <p>Test Gemini API form extraction accuracy. Analyze all forms, extract fields, and generate submission values automatically!</p>
+                <span class="badge" style="background: #667eea;">AI POWERED</span>
+            </a> -->
+        </div>
+    </div>
+</body>
+</html>

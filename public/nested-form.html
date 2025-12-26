@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deeply Nested Form Layout</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #fff7ed;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; color: #7c2d12; }
+    .subtitle { font-size: 14px; color: #9a3412; margin-bottom: 18px; }
+    .info-box {
+      background: #ffedd5;
+      border-radius: 12px;
+      border: 1px dashed #fdba74;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #92400e;
+      margin-bottom: 20px;
+    }
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1.2fr;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #fed7aa;
+      padding: 18px 16px 20px;
+    }
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #7c2d12;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7c2d12;
+      margin-bottom: 4px;
+    }
+    .accordion {
+      border-radius: 12px;
+      border: 1px solid #fecaa2;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .accordion-header {
+      padding: 10px 12px;
+      background: #fffbeb;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #92400e;
+    }
+    .accordion-body {
+      padding: 14px 14px 18px;
+      background: #fff7ed;
+      display: block;
+    }
+    .nested-panel {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px dashed #fed7aa;
+      padding: 12px 12px 14px;
+      margin-top: 10px;
+    }
+    .nested-panel h3 {
+      font-size: 13px;
+      color: #7c2d12;
+      margin-bottom: 6px;
+    }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: #7c2d12;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #fed7aa;
+      font-size: 13px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 1px #f9731644;
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    button {
+      border-radius: 999px;
+      padding: 9px 16px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-secondary { background: #ffedd5; color: #7c2d12; }
+    .btn-primary { background: #ea580c; color: #fff7ed; }
+    .message {
+      margin-top: 14px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    .message.success { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .message.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .summary-list {
+      font-size: 13px;
+      color: #7c2d12;
+      list-style: disc;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#9a3412;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Deeply Nested Application Form</h1>
+  <p class="subtitle">Tests scanners that must follow labels and inputs through multiple container levels and accordions.</p>
+
+  <div class="info-box">
+    Fields are inside several layers: grid → card → accordion → nested panel → rows. A naive DOM walker may stop too early.
+  </div>
+
+  <div class="layout-grid">
+    <div class="card">
+      <h2>Candidate Profile</h2>
+      <p style="font-size:13px;color:#9a3412;margin-bottom:8px;">All fields below are part of a single logical form.</p>
+
+      <form id="nestedForm">
+        <div class="accordion" id="personalAccordion">
+          <div class="accordion-header">
+            <span>Personal Information</span>
+            <span aria-hidden="true">▼</span>
+          </div>
+          <div class="accordion-body">
+            <div class="nested-panel">
+              <h3>Basic Details</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nf_firstName">First name *</label>
+                  <input id="nf_firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="nf_lastName">Last name *</label>
+                  <input id="nf_lastName" name="lastName" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nf_email">Email *</label>
+                  <input id="nf_email" name="email" type="email" required>
+                </div>
+                <div class="form-group">
+                  <label for="nf_phone">Phone</label>
+                  <input id="nf_phone" name="phone" type="tel">
+                </div>
+              </div>
+            </div>
+
+            <div class="nested-panel">
+              <h3>Location Details</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nf_city">City *</label>
+                  <input id="nf_city" name="city" required>
+                </div>
+                <div class="form-group">
+                  <label for="nf_country">Country *</label>
+                  <select id="nf_country" name="country" required>
+                    <option value="">Select country</option>
+                    <option value="us">United States</option>
+                    <option value="de">Germany</option>
+                    <option value="jp">Japan</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion" style="margin-top:14px;" id="jobAccordion">
+          <div class="accordion-header">
+            <span>Job Preferences</span>
+            <span aria-hidden="true">▼</span>
+          </div>
+          <div class="accordion-body">
+            <div class="nested-panel">
+              <h3>Role &amp; Experience</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nf_role">Desired role *</label>
+                  <input id="nf_role" name="role" required>
+                </div>
+                <div class="form-group">
+                  <label for="nf_experience">Years of experience *</label>
+                  <input id="nf_experience" name="experience" type="number" min="0" step="0.5" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="reset" class="btn-secondary">Reset</button>
+          <button type="submit" class="btn-primary">Submit nested form</button>
+        </div>
+
+        <div id="nestedMessage" class="message"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Scanner Hints</h2>
+      <ul class="summary-list">
+        <li>All inputs belong to a single form with id <code>nestedForm</code>.</li>
+        <li>Inputs are deeply nested; form tag is several ancestors above.</li>
+        <li>Accordions are always open here (no JS hiding), but structure is realistic.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('nestedForm');
+  const msg = document.getElementById('nestedMessage');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      const res = await fetch('/api/submit-nested-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      msg.style.display = 'block';
+      msg.className = 'message ' + (result.success ? 'success' : 'error');
+      msg.textContent = (result.success ? '✅ ' : '❌ ') + (result.message || 'Submission result');
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.className = 'message error';
+      msg.textContent = '❌ Network error while submitting nested form.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

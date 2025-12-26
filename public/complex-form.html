@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Job Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #f5576c;
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f093fb;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #f5576c;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            background: #f5576c;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #d9425a;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #f5576c;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to home</a>
+        <h1>Job Application Form</h1>
+        <p style="color: #666; margin-bottom: 30px;">Complete application with 70% success rate (random failures to test error handling)</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="jobForm">
+            <h2>Personal Information</h2>
+            
+            <div class="two-col">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="two-col">
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dob">Date of Birth *</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+            </div>
+            
+            <h2>Professional Information</h2>
+            
+            <div class="form-group">
+                <label for="position">Position Applied For *</label>
+                <select id="position" name="position" required>
+                    <option value="">Select a position</option>
+                    <option value="frontend">Frontend Developer</option>
+                    <option value="backend">Backend Developer</option>
+                    <option value="fullstack">Full Stack Developer</option>
+                    <option value="devops">DevOps Engineer</option>
+                    <option value="designer">UI/UX Designer</option>
+                    <option value="pm">Product Manager</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience">Years of Experience *</label>
+                <input type="number" id="experience" name="experience" min="0" max="50" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="salary">Expected Salary (USD) *</label>
+                <input type="number" id="salary" name="salary" min="0" step="1000" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Skills (select all that apply) *</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="skills" value="javascript"> JavaScript</label>
+                    <label><input type="checkbox" name="skills" value="python"> Python</label>
+                    <label><input type="checkbox" name="skills" value="java"> Java</label>
+                    <label><input type="checkbox" name="skills" value="react"> React</label>
+                    <label><input type="checkbox" name="skills" value="nodejs"> Node.js</label>
+                    <label><input type="checkbox" name="skills" value="aws"> AWS</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+            </div>
+            
+            <div class="form-group">
+                <label for="github">GitHub Profile</label>
+                <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
+            </div>
+            
+            <h2>Additional Information</h2>
+            
+            <div class="form-group">
+                <label for="coverLetter">Cover Letter *</label>
+                <textarea id="coverLetter" name="coverLetter" required placeholder="Tell us why you're a great fit for this position..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="resume">Resume/CV *</label>
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="availability">Availability *</label>
+                <select id="availability" name="availability" required>
+                    <option value="">Select availability</option>
+                    <option value="immediate">Immediate</option>
+                    <option value="2weeks">2 Weeks Notice</option>
+                    <option value="1month">1 Month</option>
+                    <option value="2months">2+ Months</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="remote" value="yes">
+                    Open to remote work
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="relocate" value="yes">
+                    Willing to relocate
+                </label>
+            </div>
+            
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('jobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {};
+            
+            // Handle multiple checkboxes
+            const skills = [];
+            formData.getAll('skills').forEach(skill => skills.push(skill));
+            
+            formData.forEach((value, key) => {
+                if (key === 'skills') return;
+                data[key] = value;
+            });
+            data.skills = skills;
+            
+            try {
+                const response = await fetch('/api/submit-complex', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                const messageDiv = document.getElementById('message');
+                
+                if (result.success) {
+                    messageDiv.textContent = result.message + ' Application ID: ' + result.applicationId;
+                    messageDiv.className = 'message success';
+                    messageDiv.style.display = 'block';
+                    e.target.reset();
+                } else {
+                    messageDiv.textContent = result.message;
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = 'Network error. Please check your connection and try again.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

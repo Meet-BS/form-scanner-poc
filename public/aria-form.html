@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIA-Driven Accessible Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #38bdf8, #0f172a);
+      padding: 40px 16px;
+      min-height: 100vh;
+      color: #e5e7eb;
+    }
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+      background: #020617;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #9ca3af; margin-bottom: 18px; }
+    .note {
+      background: rgba(15,23,42,0.9);
+      border-radius: 12px;
+      border: 1px dashed rgba(148,163,184,0.8);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 20px;
+    }
+    form { margin-top: 4px; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    .visually-hidden {
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+      white-space: nowrap;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #4b5563;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf866;
+    }
+    .hint { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+    .error-text { font-size: 11px; color: #fecaca; margin-top: 3px; display: none; }
+    .actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+    button {
+      border-radius: 999px;
+      padding: 8px 16px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #38bdf8;
+      color: #020617;
+    }
+    .message {
+      margin-top: 14px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    .message.success { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .message.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#93c5fd;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Accessible Contact Form (ARIA)</h1>
+  <p class="subtitle">Tests scanners that must use aria-label, aria-labelledby, and aria-describedby instead of plain labels.</p>
+
+  <div class="note">
+    Some inputs have no visible <code>&lt;label&gt;</code> text. Their meaning only exists via ARIA attributes.
+  </div>
+
+  <form id="ariaForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label id="nameLabel" class="visually-hidden" for="aria_name">Full name</label>
+        <input id="aria_name" name="fullName" aria-labelledby="nameLabel" required>
+        <div id="nameHint" class="hint">Enter your first and last name.</div>
+      </div>
+      <div class="form-group">
+        <label id="emailLabel" class="visually-hidden" for="aria_email">Email address</label>
+        <input id="aria_email" name="email" type="email" aria-labelledby="emailLabel" aria-describedby="emailHint" required>
+        <div id="emailHint" class="hint">We'll only use this to contact you about your request.</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <span id="topicLabel">Topic</span>
+        <select id="aria_topic" name="topic" aria-labelledby="topicLabel">
+          <option value="support">Support</option>
+          <option value="billing">Billing</option>
+          <option value="sales">Sales</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <span id="priorityLabel">Priority *</span>
+        <select id="aria_priority" name="priority" aria-labelledby="priorityLabel" required>
+          <option value="">Select priority</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <div id="priorityError" class="error-text">Please choose a priority.</div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:10px;">
+      <span id="messageLabel">Message *</span>
+      <textarea id="aria_message" name="message" rows="4" aria-labelledby="messageLabel" aria-describedby="messageHint" required></textarea>
+      <div id="messageHint" class="hint">Describe your request in a few sentences.</div>
+    </div>
+
+    <div class="actions">
+      <button type="submit">Send message</button>
+    </div>
+
+    <div id="ariaMessage" class="message" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('ariaForm');
+  const msg = document.getElementById('ariaMessage');
+  const priority = document.getElementById('aria_priority');
+  const priorityError = document.getElementById('priorityError');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!priority.value) {
+      priorityError.style.display = 'block';
+      priority.focus();
+      return;
+    } else {
+      priorityError.style.display = 'none';
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch('/api/submit-aria-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      msg.style.display = 'block';
+      msg.className = 'message ' + (result.success ? 'success' : 'error');
+      msg.textContent = (result.success ? '✅ ' : '❌ ') + (result.message || 'Submission result');
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.className = 'message error';
+      msg.textContent = '❌ Network error while submitting ARIA form.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

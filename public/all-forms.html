@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Forms - Ultimate Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .form-section h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .form-section .description {
+            color: #666;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        button, .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover, .btn:hover {
+            background: #5568d3;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .radio-group label, .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .inline-fields {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        .inline-fields .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .field-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .badge-warning {
+            background: #ffc107;
+            color: #000;
+        }
+        .badge-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
+        .badge-iframe {
+            background: #6f42c1;
+            color: white;
+        }
+        .divider {
+            border: none;
+            border-top: 2px dashed #e0e0e0;
+            margin: 30px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .input-group input {
+            flex: 1;
+        }
+        .hidden {
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: slideDown 0.3s;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .close-modal:hover,
+        .close-modal:focus {
+            color: #000;
+        }
+        .open-modal-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .open-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .distraction-content {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .fake-form {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #ffc107;
+            margin: 20px 0;
+        }
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 20px 0;
+            color: white;
+            font-weight: bold;
+        }
+        .sidebar-ad {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+        }
+        .testimonial-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to home</a>
+            <h1>🧪 All Forms Test Page</h1>
+            <p class="subtitle">Ultimate testing ground with 15 different form types: traditional forms, formless inputs, modal popups, redirects, iframes, and edge cases</p>
+        </div>
+
+        <!-- Form Summary & Details -->
+        <div class="form-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white; margin-bottom: 20px;">📊 Test Summary</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 36px; font-weight: bold;">15</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Functional Forms</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 36px; font-weight: bold;">3</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Fake/Disabled Forms</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 36px; font-weight: bold;">103</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Total Input Fields</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 36px; font-weight: bold;">6</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Distraction Blocks</div>
+                </div>
+            </div>
+
+            <h3 style="color: white; margin-bottom: 15px;">📋 Functional Forms Details</h3>
+            <div style="background: rgba(255,255,255,0.95); color: #333; padding: 25px; border-radius: 8px; font-size: 14px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #667eea;">
+                            <th style="padding: 10px; text-align: left; font-weight: bold;">#</th>
+                            <th style="padding: 10px; text-align: left; font-weight: bold;">Form Name</th>
+                            <th style="padding: 10px; text-align: center; font-weight: bold;">Fields</th>
+                            <th style="padding: 10px; text-align: left; font-weight: bold;">Status</th>
+                            <th style="padding: 10px; text-align: left; font-weight: bold;">Special Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">1</td>
+                            <td style="padding: 10px;">Traditional Form</td>
+                            <td style="padding: 10px; text-align: center;">3</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Standard &lt;form&gt; tag</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">2</td>
+                            <td style="padding: 10px;">Formless Inputs</td>
+                            <td style="padding: 10px; text-align: center;">4</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">No &lt;form&gt; tag, DIV-based</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">3</td>
+                            <td style="padding: 10px;">Multiple Actions</td>
+                            <td style="padding: 10px; text-align: center;">3</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">3 submit buttons (save/publish/preview)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">4</td>
+                            <td style="padding: 10px;">Table-Based</td>
+                            <td style="padding: 10px; text-align: center;">3</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Fields inside &lt;table&gt;</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">5</td>
+                            <td style="padding: 10px;">Dynamic Fields</td>
+                            <td style="padding: 10px; text-align: center;">2+</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Add/Remove fields dynamically</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">6</td>
+                            <td style="padding: 10px;">Inline Editable</td>
+                            <td style="padding: 10px; text-align: center;">3</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">contenteditable divs</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">7</td>
+                            <td style="padding: 10px;">Auto-Submit</td>
+                            <td style="padding: 10px; text-align: center;">3</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Submits on field change</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">8</td>
+                            <td style="padding: 10px;">Hidden Form</td>
+                            <td style="padding: 10px; text-align: center;">4</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Hidden until triggered</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">9</td>
+                            <td style="padding: 10px;">All Input Types</td>
+                            <td style="padding: 10px; text-align: center;">20</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">All HTML5 input types</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">10</td>
+                            <td style="padding: 10px;">Data Attributes</td>
+                            <td style="padding: 10px; text-align: center;">5</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Uses data-* attributes</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">11</td>
+                            <td style="padding: 10px;">Modal Form</td>
+                            <td style="padding: 10px; text-align: center;">5</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Opens in popup modal</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">12</td>
+                            <td style="padding: 10px;">Redirect Form</td>
+                            <td style="padding: 10px; text-align: center;">5</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Redirects to success page</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">13</td>
+                            <td style="padding: 10px;">Success Modal</td>
+                            <td style="padding: 10px; text-align: center;">6</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Shows modal on success</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 10px;">14</td>
+                            <td style="padding: 10px;">Iframe Contact</td>
+                            <td style="padding: 10px; text-align: center;">5</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Embedded in iframe</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">15</td>
+                            <td style="padding: 10px;">Popup Registration</td>
+                            <td style="padding: 10px; text-align: center;">9</td>
+                            <td style="padding: 10px;"><span style="color: #28a745;">✓ Works</span></td>
+                            <td style="padding: 10px;">Opens in new window/tab</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                                    <div class="header">
+                                            <!-- Hidden Form (not visible on the page) -->
+                                            <form id="hidden-form" style="display:none;">
+                                                <label for="hidden-name">Name:</label>
+                                                <input type="text" id="hidden-name" name="name">
+                                                <label for="hidden-email">Email:</label>
+                                                <input type="email" id="hidden-email" name="email">
+                                                <label for="hidden-age">Age:</label>
+                                                <input type="number" id="hidden-age" name="age">
+                                                <button type="submit">Submit</button>
+                                            </form>
+                    <h4 style="margin-bottom: 10px; color: #856404;">⚠️ Fake/Disabled Forms (Should be Ignored)</h4>
+                    <ul style="margin-left: 20px; color: #856404; line-height: 1.8;">
+                        <li><strong>Fake Form 1:</strong> "Example Form (Display Only)" - 2 disabled fields after Form 1</li>
+                        <li><strong>Fake Form 2:</strong> "Sample Survey" - 2 disabled fields after Form 7</li>
+                        <li><strong>Fake Form 3:</strong> "Locked Registration" - 4 disabled fields at the end</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #856404;"><strong>Total fake fields:</strong> 8 (should NOT be counted as functional)</p>
+                </div>
+
+                <div style="margin-top: 20px; padding: 20px; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
+                    <h4 style="margin-bottom: 10px; color: #1565c0;">ℹ️ Testing Notes</h4>
+                    <ul style="margin-left: 20px; color: #1565c0; line-height: 1.8;">
+                        <li>Form scanners should identify <strong>15 functional forms</strong> with <strong>103 total fields</strong></li>
+                        <li>Scanners should ignore the 3 fake/disabled forms and their 8 fields</li>
+                        <li>Scanners should skip distraction content (images, testimonials, stats, marketing text)</li>
+                        <li>Forms use various patterns: traditional forms, DIV-based, contenteditable, data attributes, iframes, popup buttons</li>
+                        <li>Some forms have no &lt;form&gt; tag but are still functional</li>
+                        <li>Form 14 is embedded in an iframe (requires iframe extraction)</li>
+                        <li>Form 15 opens in a new window/tab via button click</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form 1: Standard Form with Traditional Tag -->
+        <div class="form-section">
+            <h2>1. Traditional Form (with &lt;form&gt; tag)</h2>
+            <p class="description">
+                <strong>Testing:</strong> Standard HTML form with proper form tag and submit button
+            </p>
+            
+            <div id="message1" class="message"></div>
+            
+            <form id="traditionalForm">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="trad_name">Name *</label>
+                        <input type="text" id="trad_name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="trad_email">Email *</label>
+                        <input type="email" id="trad_email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="trad_message">Message</label>
+                    <textarea id="trad_message" name="message"></textarea>
+                </div>
+                <button type="submit">Submit Traditional Form</button>
+            </form>
+        </div>
+
+        <!-- Distracting Content Block 1 -->
+        <div class="form-section">
+            <div class="image-placeholder">📊 Analytics Dashboard</div>
+            
+            <h2 style="color: #333; margin-bottom: 15px;">Welcome to Our Platform</h2>
+            <p style="color: #666; line-height: 1.8; margin-bottom: 20px;">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore 
+                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui 
+                officia deserunt mollit anim id est laborum.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Happy Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support</div>
+                </div>
+            </div>
+
+            <div class="testimonial-box">
+                <p>"This platform changed my life! The service is incredible and the support team is always there when 
+                you need them. I highly recommend it to everyone!" - John Doe, CEO</p>
+            </div>
+        </div>
+
+        <!-- Fake Form (Not Actually Functional) -->
+        <div class="form-section">
+            <div class="fake-form">
+                <h3 style="color: #856404; margin-bottom: 15px;">⚠️ Example Form (Display Only - Not Functional)</h3>
+                <p style="color: #856404; margin-bottom: 15px;">This is just a visual example of a form. It doesn't actually submit.</p>
+                <div class="form-group">
+                    <label>Example Field</label>
+                    <input type="text" placeholder="This won't submit" disabled style="background: #fff3cd;">
+                </div>
+                <div class="form-group">
+                    <label>Another Example</label>
+                    <input type="email" placeholder="Just for show" disabled style="background: #fff3cd;">
+                </div>
+                <button disabled style="opacity: 0.5; cursor: not-allowed;">Disabled Button</button>
+            </div>
+        </div>
+
+        <!-- Form 2: No Form Tag - DIV Based -->
+        <div class="form-section">
+            <h2>2. Formless Inputs (no &lt;form&gt; tag) <span class="badge badge-warning">NO FORM TAG</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Input fields without a form wrapper, submission via JavaScript button click
+            </p>
+            
+            <div id="message2" class="message"></div>
+            
+            <div id="formlessContainer">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="formless_firstName">First Name *</label>
+                        <input type="text" id="formless_firstName" data-field="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formless_lastName">Last Name *</label>
+                        <input type="text" id="formless_lastName" data-field="lastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formless_email">Email Address *</label>
+                    <input type="email" id="formless_email" data-field="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="formless_phone">Phone Number</label>
+                    <input type="tel" id="formless_phone" data-field="phone">
+                </div>
+                <button type="button" class="btn" id="submitFormlessBtn">Submit Without Form Tag</button>
+            </div>
+        </div>
+
+        <!-- Form 3: Individual Submit Buttons -->
+        <div class="form-section">
+            <h2>3. Multiple Actions (separate buttons) <span class="badge badge-info">MULTIPLE ACTIONS</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Single form with multiple submit buttons performing different actions
+            </p>
+            
+            <div id="message3" class="message"></div>
+            
+            <form id="multiActionForm">
+                <div class="form-group">
+                    <label for="multi_title">Document Title *</label>
+                    <input type="text" id="multi_title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="multi_content">Content *</label>
+                    <textarea id="multi_content" name="content" required></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" name="action" value="save">Save Draft</button>
+                    <button type="submit" name="action" value="publish">Publish</button>
+                    <button type="submit" name="action" value="preview">Preview</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form 4: Table-Based Form -->
+        <div class="form-section">
+            <h2>4. Table-Based Form <span class="badge badge-info">TABLE LAYOUT</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form fields embedded within a table structure
+            </p>
+            
+            <div id="message4" class="message"></div>
+            
+            <form id="tableForm">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><label for="table_username">Username *</label></td>
+                            <td><input type="text" id="table_username" name="username" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="table_password">Password *</label></td>
+                            <td><input type="password" id="table_password" name="password" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="table_role">Role *</label></td>
+                            <td>
+                                <select id="table_role" name="role" required>
+                                    <option value="">Select role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                    <option value="guest">Guest</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="submit">Submit Table Form</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <!-- Distracting Content Block 2 -->
+        <div class="form-section">
+            <div class="image-placeholder">🚀 Product Launch</div>
+            
+            <div class="distraction-content">
+                <h2 style="color: #667eea; margin-bottom: 15px;">Our Services</h2>
+                <p style="line-height: 1.8; color: #555; margin-bottom: 15px;">
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+                    totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
+                    dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+                </p>
+                <p style="line-height: 1.8; color: #555;">
+                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was 
+                    born and I will give you a complete account of the system, and expound the actual teachings of the 
+                    great explorer of the truth, the master-builder of human happiness.
+                </p>
+            </div>
+
+            <div class="sidebar-ad">
+                <h3 style="margin-bottom: 10px;">🎉 Limited Time Offer!</h3>
+                <p style="margin-bottom: 15px;">Sign up today and get premium access for 3 months FREE!</p>
+                <button style="background: white; color: #fa709a; padding: 10px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Claim Offer
+                </button>
+            </div>
+
+            <div class="testimonial-box">
+                <p>"Outstanding service! We've been using this platform for 2 years and couldn't be happier with the results. 
+                The team is professional and always delivers on time." - Jane Smith, Marketing Director</p>
+            </div>
+        </div>
+
+        <!-- Form 5: Dynamic Field Addition -->
+        <div class="form-section">
+            <h2>5. Dynamic Cascading Fields <span class="badge badge-warning">DYNAMIC</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form where fields appear automatically based on dropdown/radio selections (no button clicks)
+            </p>
+            
+            <div id="message5" class="message"></div>
+            
+            <form id="dynamicForm">
+                <div class="form-group">
+                    <label for="dyn_name">Your Name *</label>
+                    <input type="text" id="dyn_name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dyn_email">Email Address *</label>
+                    <input type="email" id="dyn_email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purpose">Purpose *</label>
+                    <select id="purpose" name="purpose" required>
+                        <option value="">-- Select Purpose --</option>
+                        <option value="personal">Personal Use</option>
+                        <option value="business">Business Use</option>
+                        <option value="education">Educational Use</option>
+                    </select>
+                    <small style="color: #666; font-size: 12px;">Select a purpose to reveal additional fields</small>
+                </div>
+                
+                <!-- Business Fields -->
+                <div id="businessFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="companyName">Company Name *</label>
+                        <input type="text" id="companyName" name="companyName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Industry *</label>
+                        <select id="industry" name="industry">
+                            <option value="">-- Select Industry --</option>
+                            <option value="tech">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Other Industry Field -->
+                    <div id="otherIndustryField" style="display: none;">
+                        <div class="form-group">
+                            <label for="otherIndustry">Please Specify Industry *</label>
+                            <input type="text" id="otherIndustry" name="otherIndustry">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Fields -->
+                <div id="educationFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="institution">Institution Name *</label>
+                        <input type="text" id="institution" name="institution">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="level">Education Level *</label>
+                        <select id="level" name="level">
+                            <option value="">-- Select Level --</option>
+                            <option value="high-school">High School</option>
+                            <option value="undergraduate">Undergraduate</option>
+                            <option value="graduate">Graduate</option>
+                            <option value="doctorate">Doctorate</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Advanced Degree Fields -->
+                    <div id="advancedFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="researchArea">Research Area *</label>
+                            <input type="text" id="researchArea" name="researchArea">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Fields -->
+                <div id="personalFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="interest">Primary Interest *</label>
+                        <select id="interest" name="interest">
+                            <option value="">-- Select Interest --</option>
+                            <option value="hobby">Hobby/Personal Project</option>
+                            <option value="learning">Learning</option>
+                            <option value="creative">Creative Work</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit">Submit Dynamic Form</button>
+            </form>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Form 6: Inline Edit Style -->
+        <div class="form-section">
+            <h2>6. Inline Editing (no visible form) <span class="badge badge-danger">NO FORM TAG</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Editable content that saves via AJAX without traditional form structure
+            </p>
+            
+            <div id="message6" class="message"></div>
+            
+            <div class="field-container">
+                <div class="form-group">
+                    <label>Profile Name</label>
+                    <div contenteditable="true" id="inline_name" data-field="name" style="border: 2px solid #e0e0e0; padding: 12px; border-radius: 6px; background: white;">
+                        John Doe
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Bio</label>
+                    <div contenteditable="true" id="inline_bio" data-field="bio" style="border: 2px solid #e0e0e0; padding: 12px; border-radius: 6px; background: white; min-height: 80px;">
+                        Software developer and tech enthusiast
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inline_status">Status</label>
+                    <select id="inline_status" data-field="status">
+                        <option value="active">Active</option>
+                        <option value="away">Away</option>
+                        <option value="busy">Busy</option>
+                    </select>
+                </div>
+                
+                <button type="button" id="saveInlineBtn">Save Changes</button>
+            </div>
+        </div>
+
+        <!-- Distracting Content Block 2.5 -->
+        <div class="form-section">
+            <div class="image-placeholder">🔥 Trending Features</div>
+            
+            <div class="testimonial-box">
+                <p>"We've tried many solutions, but this one stands out. The intuitive interface and powerful features 
+                make it our go-to platform for all projects. Five stars!" - Emily Davis, Product Manager</p>
+            </div>
+
+            <div class="sidebar-ad">
+                <h3 style="margin-bottom: 10px;">⚡ Speed Boost</h3>
+                <p style="margin-bottom: 15px;">Experience 10x faster processing with our new engine!</p>
+                <button style="background: white; color: #fa709a; padding: 10px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Try Now
+                </button>
+            </div>
+
+            <div class="distraction-content">
+                <p style="line-height: 1.8; color: #555;">
+                    Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, 
+                    but because occasionally circumstances occur in which toil and pain can procure him some great pleasure.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form 7: AJAX Submission on Change -->
+        <div class="form-section">
+            <h2>7. Auto-Submit on Change <span class="badge badge-info">AUTO-SUBMIT</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form that submits automatically when values change (no submit button)
+            </p>
+            
+            <div id="message7" class="message"></div>
+            
+            <div class="field-container">
+                <div class="form-group">
+                    <label for="auto_theme">Theme Preference</label>
+                    <select id="auto_theme" class="auto-submit">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="auto_notifications">
+                        <input type="checkbox" id="auto_notifications" class="auto-submit">
+                        Enable Notifications
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="auto_language">Language</label>
+                    <select id="auto_language" class="auto-submit">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                    </select>
+                </div>
+                
+                <p style="color: #666; font-size: 14px; margin-top: 15px;">
+                    ℹ️ Changes are saved automatically
+                </p>
+            </div>
+        </div>
+
+        <!-- Distracting Content Block 3 -->
+        <div class="form-section">
+            <div class="image-placeholder">💼 Enterprise Solutions</div>
+            
+            <h2 style="color: #333; margin-bottom: 15px;">Customer Success Stories</h2>
+            
+            <div class="distraction-content">
+                <p style="line-height: 1.8; color: #555; margin-bottom: 15px;">
+                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum 
+                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non 
+                    provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">200+</div>
+                    <div class="stat-label">Companies</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">15M</div>
+                    <div class="stat-label">Data Points</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+
+            <div class="image-placeholder">🎨 Design Gallery</div>
+        </div>
+
+        <!-- Another Fake Form -->
+        <div class="form-section">
+            <div class="fake-form">
+                <h3 style="color: #856404; margin-bottom: 15px;">📋 Sample Survey (Not Submittable)</h3>
+                <p style="color: #856404; margin-bottom: 15px;">This is a decorative survey example. Fields are disabled.</p>
+                <div class="form-group">
+                    <label>How satisfied are you?</label>
+                    <select disabled style="background: #fff3cd;">
+                        <option>Very Satisfied</option>
+                        <option>Satisfied</option>
+                        <option>Neutral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Additional Comments</label>
+                    <textarea disabled style="background: #fff3cd; min-height: 60px;" placeholder="This textarea is disabled"></textarea>
+                </div>
+                <button disabled style="opacity: 0.5; cursor: not-allowed;">Cannot Submit</button>
+            </div>
+        </div>
+
+        <!-- Form 8: Hidden Form Submission -->
+        <div class="form-section">
+            <h2>8. Hidden Form with Visible Trigger <span class="badge badge-danger">HIDDEN FORM</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Hidden form that gets populated and submitted via JavaScript
+            </p>
+            
+            <div id="message8" class="message"></div>
+            
+            <div class="field-container">
+                <div class="form-group">
+                    <label for="visible_product">Select Product</label>
+                    <select id="visible_product">
+                        <option value="laptop">Laptop - $999</option>
+                        <option value="phone">Phone - $699</option>
+                        <option value="tablet">Tablet - $499</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visible_quantity">Quantity</label>
+                    <input type="number" id="visible_quantity" value="1" min="1" max="10">
+                </div>
+                
+                <button type="button" id="submitHiddenBtn">Add to Cart</button>
+            </div>
+            
+            <!-- Hidden form -->
+            <form id="hiddenForm" style="display: none;">
+                <input type="hidden" name="product" id="hidden_product">
+                <input type="hidden" name="quantity" id="hidden_quantity">
+                <input type="hidden" name="timestamp" id="hidden_timestamp">
+            </form>
+        </div>
+
+        <!-- Form 9: Mixed Input Types -->
+        <div class="form-section">
+            <h2>9. All Input Types <span class="badge badge-info">COMPREHENSIVE</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form containing every HTML5 input type
+            </p>
+            
+            <div id="message9" class="message"></div>
+            
+            <form id="allTypesForm">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_text">Text</label>
+                        <input type="text" id="all_text" name="text" placeholder="Text input">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_email">Email</label>
+                        <input type="email" id="all_email" name="email" placeholder="email@example.com">
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_number">Number</label>
+                        <input type="number" id="all_number" name="number" placeholder="123">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_tel">Tel</label>
+                        <input type="tel" id="all_tel" name="tel" placeholder="(123) 456-7890">
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_url">URL</label>
+                        <input type="url" id="all_url" name="url" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_password">Password</label>
+                        <input type="password" id="all_password" name="password">
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_date">Date</label>
+                        <input type="date" id="all_date" name="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_time">Time</label>
+                        <input type="time" id="all_time" name="time">
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_datetime">DateTime-Local</label>
+                        <input type="datetime-local" id="all_datetime" name="datetime">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_month">Month</label>
+                        <input type="month" id="all_month" name="month">
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="all_week">Week</label>
+                        <input type="week" id="all_week" name="week">
+                    </div>
+                    <div class="form-group">
+                        <label for="all_color">Color</label>
+                        <input type="color" id="all_color" name="color" value="#667eea">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="all_range">Range: <span id="rangeValue">50</span></label>
+                    <input type="range" id="all_range" name="range" min="0" max="100" value="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="all_file">File</label>
+                    <input type="file" id="all_file" name="file">
+                </div>
+                
+                <div class="form-group">
+                    <label>Radio Buttons</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="radio" value="option1"> Option 1</label>
+                        <label><input type="radio" name="radio" value="option2"> Option 2</label>
+                        <label><input type="radio" name="radio" value="option3"> Option 3</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Checkboxes</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="checks[]" value="check1"> Checkbox 1</label>
+                        <label><input type="checkbox" name="checks[]" value="check2"> Checkbox 2</label>
+                        <label><input type="checkbox" name="checks[]" value="check3"> Checkbox 3</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="all_select">Select</label>
+                    <select id="all_select" name="select">
+                        <option value="">Choose an option</option>
+                        <option value="opt1">Option 1</option>
+                        <option value="opt2">Option 2</option>
+                        <option value="opt3">Option 3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="all_textarea">Textarea</label>
+                    <textarea id="all_textarea" name="textarea" placeholder="Enter multiple lines..."></textarea>
+                </div>
+                
+                <button type="submit">Submit All Types</button>
+            </form>
+        </div>
+
+        <!-- Form 10: Data Attributes Based -->
+        <div class="form-section">
+            <h2>10. Data Attribute Collection <span class="badge badge-danger">NO FORM TAG</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Input collection using data attributes instead of name attributes
+            </p>
+            
+            <div id="message10" class="message"></div>
+            
+            <div id="dataAttrContainer">
+                <div class="form-group">
+                    <label for="data_username">Username</label>
+                    <input type="text" id="data_username" data-submit="username" data-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="data_email">Email</label>
+                    <input type="email" id="data_email" data-submit="email" data-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="data_age">Age</label>
+                    <input type="number" id="data_age" data-submit="age" data-validate="number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="data_country">Country</label>
+                    <select id="data_country" data-submit="country">
+                        <option value="">Select</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="ca">Canada</option>
+                    </select>
+                </div>
+                
+                <button type="button" id="submitDataAttrBtn">Submit Data Attributes</button>
+            </div>
+        </div>
+
+        <!-- Distracting Content Block 4 -->
+        <div class="form-section">
+            <div class="image-placeholder">🌟 Features Overview</div>
+            
+            <div class="testimonial-box">
+                <p>"Absolutely phenomenal! The platform exceeded all our expectations. We saw a 300% increase in productivity 
+                within the first month. Highly recommended for any business looking to scale." - Michael Brown, CTO</p>
+            </div>
+
+            <div class="distraction-content">
+                <h2 style="color: #667eea; margin-bottom: 15px;">Why Thousands Choose Us</h2>
+                <p style="line-height: 1.8; color: #555; margin-bottom: 15px;">
+                    Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est 
+                    eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas 
+                    assumenda est, omnis dolor repellendus.
+                </p>
+                <p style="line-height: 1.8; color: #555;">
+                    Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et 
+                    voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente 
+                    delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores.
+                </p>
+            </div>
+
+            <div class="sidebar-ad">
+                <h3 style="margin-bottom: 10px;">🏆 Award Winning</h3>
+                <p style="margin-bottom: 15px;">Best Platform of the Year 2024!</p>
+                <button style="background: white; color: #fa709a; padding: 10px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    See Awards
+                </button>
+            </div>
+
+            <div class="image-placeholder">📈 Growth Metrics</div>
+        </div>
+
+        <!-- Form 11: Modal Form -->
+        <div class="form-section">
+            <h2>11. Modal Form <span class="badge badge-info">MODAL POPUP</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form that appears in a modal overlay when triggered
+            </p>
+            
+            <div class="field-container" style="text-align: center; padding: 60px 20px;">
+                <h3 style="margin-bottom: 20px;">Click the button to open the modal form</h3>
+                <button type="button" class="open-modal-btn" id="openModalBtn">
+                    📝 Open Contact Form
+                </button>
+            </div>
+        </div>
+
+        <!-- Form 12: Redirect to Success Page -->
+        <div class="form-section">
+            <h2>12. Form with Redirect <span class="badge badge-warning">REDIRECTS</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form that redirects to a success page after submission
+            </p>
+            
+            <div id="message12" class="message"></div>
+            
+            <form id="redirectForm">
+                <div class="form-group">
+                    <label for="redirect_name">Full Name *</label>
+                    <input type="text" id="redirect_name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="redirect_email">Email Address *</label>
+                    <input type="email" id="redirect_email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="redirect_reason">Reason for Contact *</label>
+                    <select id="redirect_reason" name="reason" required>
+                        <option value="">Select a reason</option>
+                        <option value="quote">Request a Quote</option>
+                        <option value="demo">Schedule a Demo</option>
+                        <option value="question">Ask a Question</option>
+                        <option value="support">Get Support</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="redirect_comments">Additional Comments</label>
+                    <textarea id="redirect_comments" name="comments"></textarea>
+                </div>
+                
+                <button type="submit">Submit (Will Redirect)</button>
+            </form>
+        </div>
+
+        <!-- Form 13: Success Modal -->
+        <div class="form-section">
+            <h2>13. Form with Success Modal <span class="badge badge-info">SUCCESS MODAL</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form that shows a success modal overlay after submission
+            </p>
+            
+            <div id="message13" class="message"></div>
+            
+            <form id="successModalForm">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="success_firstName">First Name *</label>
+                        <input type="text" id="success_firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="success_lastName">Last Name *</label>
+                        <input type="text" id="success_lastName" name="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="success_email">Email Address *</label>
+                    <input type="email" id="success_email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="success_service">Service Interested In *</label>
+                    <select id="success_service" name="service" required>
+                        <option value="">Select a service</option>
+                        <option value="consulting">Consulting</option>
+                        <option value="development">Development</option>
+                        <option value="design">Design</option>
+                        <option value="marketing">Marketing</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="success_budget">Budget Range</label>
+                    <select id="success_budget" name="budget">
+                        <option value="">Select budget</option>
+                        <option value="5k">Under $5,000</option>
+                        <option value="10k">$5,000 - $10,000</option>
+                        <option value="25k">$10,000 - $25,000</option>
+                        <option value="50k">$25,000 - $50,000</option>
+                        <option value="50k+">$50,000+</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Submit (Shows Modal)</button>
+            </form>
+        </div>
+
+        <!-- Form 14: Iframe Embedded Form -->
+        <div class="form-section">
+            <h2>14. Iframe Embedded Contact Form <span class="badge badge-iframe">IFRAME</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Form embedded within an iframe - tests iframe content extraction capability
+            </p>
+            
+            <div style="width: 100%; height: 650px; border: 3px solid #667eea; border-radius: 8px; overflow: hidden;">
+                <iframe 
+                    src="/iframe-form.html" 
+                    title="Embedded Contact Form"
+                    style="width: 100%; height: 100%; border: none;"
+                    allow="fullscreen"
+                ></iframe>
+            </div>
+        </div>
+
+        <!-- Form 15: Popup Window Form -->
+        <div class="form-section">
+            <h2>15. Popup Window Registration Form <span class="badge badge-iframe">POPUP</span></h2>
+            <p class="description">
+                <strong>Testing:</strong> Button that opens a registration form in a new window/tab - tests detection of forms accessed via button clicks
+            </p>
+            
+            <div style="text-align: center; padding: 40px;">
+                <p style="margin-bottom: 20px; color: #666; font-size: 16px;">Click the button below to open the registration form in a new tab</p>
+                
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn" onclick="openNewTab()" style="background: #764ba2; padding: 16px 32px; font-size: 18px;">
+                        📑 Open in New Tab
+                    </button>
+                </div>
+                
+                <p style="margin-top: 20px; color: #999; font-size: 14px; font-style: italic;">
+                    The form contains 9 fields: firstName, lastName, email, phone, company, jobTitle, country, newsletter, terms
+                </p>
+            </div>
+        </div>
+
+        <!-- Final Distracting Content Block -->
+        <div class="form-section">
+            <div class="image-placeholder">🎯 Success Stories</div>
+            
+            <h2 style="color: #333; margin-bottom: 15px; text-align: center;">Join 50,000+ Happy Customers</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+            </div>
+
+            <div class="distraction-content">
+                <h3 style="margin-bottom: 10px;">Get Started Today</h3>
+                <p style="line-height: 1.8; color: #555; margin-bottom: 15px;">
+                    On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and 
+                    demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee 
+                    the pain and trouble that are bound to ensue.
+                </p>
+            </div>
+
+            <div class="testimonial-box">
+                <p>"Game changer! This is exactly what we needed to streamline our operations. The ROI was immediate 
+                and the support team has been incredible throughout our journey." - Sarah Johnson, Operations Manager</p>
+            </div>
+
+            <div class="image-placeholder">🌐 Global Network</div>
+
+            <div class="sidebar-ad">
+                <h3 style="margin-bottom: 10px;">💎 Premium Features</h3>
+                <p style="margin-bottom: 15px;">Unlock advanced analytics, priority support, and exclusive features!</p>
+                <button style="background: white; color: #fa709a; padding: 10px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Upgrade Now
+                </button>
+            </div>
+
+            <div class="distraction-content">
+                <h3 style="margin-bottom: 10px;">Our Commitment</h3>
+                <p style="line-height: 1.8; color: #555;">
+                    These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice 
+                    is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is 
+                    to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty 
+                    or the obligations of business it will frequently occur that pleasures have to be repudiated and 
+                    annoyances accepted.
+                </p>
+            </div>
+
+            <div class="image-placeholder">✨ Innovation Hub</div>
+        </div>
+
+        <!-- Another Decorative Fake Form -->
+        <div class="form-section">
+            <div class="fake-form">
+                <h3 style="color: #856404; margin-bottom: 15px;">🔒 Locked Registration (Demo Only)</h3>
+                <p style="color: #856404; margin-bottom: 15px;">This registration form is for demonstration purposes. It's not functional.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" placeholder="Not active" disabled style="background: #fff3cd;">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" placeholder="Not active" disabled style="background: #fff3cd;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="Disabled field" disabled style="background: #fff3cd;">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Cannot enter" disabled style="background: #fff3cd;">
+                </div>
+                <button disabled style="opacity: 0.5; cursor: not-allowed;">Registration Closed</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 style="margin-bottom: 10px; color: #667eea;">Contact Us</h2>
+            <p style="color: #666; margin-bottom: 25px;">Fill out the form below and we'll get back to you soon!</p>
+            
+            <div id="message11" class="message"></div>
+            
+            <form id="modalForm">
+                <div class="form-group">
+                    <label for="modal_name">Full Name *</label>
+                    <input type="text" id="modal_name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal_email">Email Address *</label>
+                    <input type="email" id="modal_email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal_subject">Subject *</label>
+                    <select id="modal_subject" name="subject" required>
+                        <option value="">Select a subject</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="support">Technical Support</option>
+                        <option value="sales">Sales Question</option>
+                        <option value="feedback">Feedback</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal_message">Message *</label>
+                    <textarea id="modal_message" name="message" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="subscribe" value="yes">
+                        Subscribe to newsletter
+                    </label>
+                </div>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal Structure -->
+    <div id="successModal" class="modal">
+        <div class="modal-content" style="text-align: center; max-width: 500px;">
+            <span class="close-modal" id="closeSuccessModal">&times;</span>
+            <div style="font-size: 64px; margin-bottom: 20px;">✅</div>
+            <h2 style="margin-bottom: 15px; color: #28a745;">Success!</h2>
+            <p style="color: #666; font-size: 18px; line-height: 1.6; margin-bottom: 25px;">
+                Your form has been submitted successfully. We'll get back to you as soon as possible.
+            </p>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                <p style="color: #555; margin-bottom: 10px;"><strong>Confirmation Number:</strong></p>
+                <p style="font-size: 24px; font-weight: bold; color: #667eea;" id="confirmationNumber">-</p>
+            </div>
+            <button type="button" id="closeSuccessBtn" style="background: #28a745;">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Form 1: Traditional Form
+        document.getElementById('traditionalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm(e.target, '/api/submit-all-forms', 'message1', 'Traditional Form');
+        });
+
+        // Form 2: Formless Submission
+        document.getElementById('submitFormlessBtn').addEventListener('click', function() {
+            const data = {};
+            const container = document.getElementById('formlessContainer');
+            const inputs = container.querySelectorAll('[data-field]');
+            
+            inputs.forEach(input => {
+                data[input.dataset.field] = input.value;
+            });
+            
+            submitData(data, '/api/submit-all-forms', 'message2', 'Formless');
+        });
+
+        // Form 3: Multi-Action Form
+        document.getElementById('multiActionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            const action = e.submitter.value;
+            data.action = action;
+            
+            await submitData(data, '/api/submit-all-forms', 'message3', `Multi-Action (${action})`);
+        });
+
+        // Form 4: Table Form
+        document.getElementById('tableForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm(e.target, '/api/submit-all-forms', 'message4', 'Table Form');
+        });
+
+        // Form 5: Dynamic Cascading Form
+        // Helper function to toggle fields visibility and required attributes
+        function toggleFields(fieldId, show, requiredFieldIds = []) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.style.display = show ? 'block' : 'none';
+                requiredFieldIds.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        input.required = show;
+                        if (!show) input.value = ''; // Clear value when hiding
+                    }
+                });
+            }
+        }
+
+        // Purpose selection handler
+        document.getElementById('purpose').addEventListener('change', function(e) {
+            const value = e.target.value;
+            
+            // Hide all purpose-specific sections
+            toggleFields('businessFields', false, ['companyName']);
+            toggleFields('educationFields', false, ['institution']);
+            toggleFields('personalFields', false, ['interest']);
+            toggleFields('otherIndustryField', false, ['otherIndustry']);
+            toggleFields('advancedFields', false, ['researchArea']);
+            
+            // Show relevant section
+            if (value === 'business') {
+                toggleFields('businessFields', true, ['companyName']);
+            } else if (value === 'education') {
+                toggleFields('educationFields', true, ['institution']);
+            } else if (value === 'personal') {
+                toggleFields('personalFields', true, ['interest']);
+            }
+        });
+
+        // Industry selection handler (nested dependency)
+        document.getElementById('industry').addEventListener('change', function(e) {
+            toggleFields('otherIndustryField', e.target.value === 'other', ['otherIndustry']);
+        });
+
+        // Education level handler (nested dependency)
+        document.getElementById('level').addEventListener('change', function(e) {
+            const isAdvanced = e.target.value === 'graduate' || e.target.value === 'doctorate';
+            toggleFields('advancedFields', isAdvanced, isAdvanced ? ['researchArea'] : []);
+        });
+
+        document.getElementById('dynamicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm(e.target, '/api/submit-all-forms', 'message5', 'Dynamic Cascading Form');
+        });
+
+        // Form 6: Inline Editing
+        document.getElementById('saveInlineBtn').addEventListener('click', function() {
+            const data = {
+                name: document.getElementById('inline_name').textContent.trim(),
+                bio: document.getElementById('inline_bio').textContent.trim(),
+                status: document.getElementById('inline_status').value
+            };
+            
+            submitData(data, '/api/submit-all-forms', 'message6', 'Inline Edit');
+        });
+
+        // Form 7: Auto-Submit
+        document.querySelectorAll('.auto-submit').forEach(element => {
+            element.addEventListener('change', function() {
+                const data = {
+                    theme: document.getElementById('auto_theme').value,
+                    notifications: document.getElementById('auto_notifications').checked,
+                    language: document.getElementById('auto_language').value
+                };
+                
+                submitData(data, '/api/submit-all-forms', 'message7', 'Auto-Submit Settings');
+            });
+        });
+
+        // Form 8: Hidden Form
+        document.getElementById('submitHiddenBtn').addEventListener('click', function() {
+            document.getElementById('hidden_product').value = document.getElementById('visible_product').value;
+            document.getElementById('hidden_quantity').value = document.getElementById('visible_quantity').value;
+            document.getElementById('hidden_timestamp').value = new Date().toISOString();
+            
+            const formData = new FormData(document.getElementById('hiddenForm'));
+            const data = Object.fromEntries(formData);
+            
+            submitData(data, '/api/submit-all-forms', 'message8', 'Hidden Form');
+        });
+
+        // Form 9: All Types
+        document.getElementById('all_range').addEventListener('input', function() {
+            document.getElementById('rangeValue').textContent = this.value;
+        });
+
+        document.getElementById('allTypesForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm(e.target, '/api/submit-all-forms', 'message9', 'All Input Types');
+        });
+
+        // Form 10: Data Attributes
+        document.getElementById('submitDataAttrBtn').addEventListener('click', function() {
+            const data = {};
+            const inputs = document.querySelectorAll('[data-submit]');
+            
+            inputs.forEach(input => {
+                const key = input.dataset.submit;
+                data[key] = input.value;
+            });
+            
+            submitData(data, '/api/submit-all-forms', 'message10', 'Data Attributes');
+        });
+
+        // Form 11: Modal Form
+        const modal = document.getElementById('contactModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModal');
+
+        openModalBtn.addEventListener('click', function() {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.getElementById('modalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm(e.target, '/api/submit-all-forms', 'message11', 'Modal Form');
+            
+            // Close modal on successful submission
+            setTimeout(() => {
+                if (document.getElementById('message11').classList.contains('success')) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    e.target.reset();
+                }
+            }, 2000);
+        });
+
+        // Form 12: Redirect Form
+        document.getElementById('redirectForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.formName = 'Redirect Form';
+            
+            try {
+                const response = await fetch('/api/submit-redirect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Redirect to success page
+                    window.location.href = '/success.html?ref=' + result.confirmationId;
+                } else {
+                    const messageDiv = document.getElementById('message12');
+                    messageDiv.textContent = '❌ ' + result.message;
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('message12');
+                messageDiv.textContent = '❌ Network error: ' + error.message;
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+
+        // Form 13: Success Modal Form
+        const successModal = document.getElementById('successModal');
+        const closeSuccessModal = document.getElementById('closeSuccessModal');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+
+        closeSuccessModal.addEventListener('click', function() {
+            successModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        closeSuccessBtn.addEventListener('click', function() {
+            successModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        document.getElementById('successModalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.formName = 'Success Modal Form';
+            
+            try {
+                const response = await fetch('/api/submit-all-forms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Generate confirmation number
+                    const confirmationNumber = 'CNF-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                    document.getElementById('confirmationNumber').textContent = confirmationNumber;
+                    
+                    // Show success modal
+                    successModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Reset form
+                    e.target.reset();
+                } else {
+                    const messageDiv = document.getElementById('message13');
+                    messageDiv.textContent = '❌ ' + result.message;
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('message13');
+                messageDiv.textContent = '❌ Network error: ' + error.message;
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
+
+        // Helper Functions
+        async function submitForm(form, endpoint, messageId, formName) {
+            const formData = new FormData(form);
+            const data = {};
+            
+            formData.forEach((value, key) => {
+                if (key.endsWith('[]')) {
+                    const arrayKey = key.slice(0, -2);
+                    if (!data[arrayKey]) data[arrayKey] = [];
+                    data[arrayKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+            
+            data.formName = formName;
+            await submitData(data, endpoint, messageId, formName);
+        }
+
+        async function submitData(data, endpoint, messageId, formName) {
+            data.formName = formName;
+            const messageDiv = document.getElementById(messageId);
+            
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageDiv.textContent = '✅ ' + result.message;
+                    messageDiv.className = 'message success';
+                } else {
+                    messageDiv.textContent = '❌ ' + result.message;
+                    messageDiv.className = 'message error';
+                }
+                messageDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            } catch (error) {
+                messageDiv.textContent = '❌ Network error: ' + error.message;
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        }
+
+        // Popup window functions
+        function openNewTab() {
+            window.open('/popup-form.html', '_blank');
+        }
+    </script>
+
+        <!-- Overlapped Form Example -->
+        <div style="position: relative; height: 320px; margin: 40px 0;">
+            <form id="overlapped-form" style="position: absolute; top: 60px; left: 40px; width: 320px; background: #f9f9f9; border: 1px solid #ccc; padding: 18px; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <label for="overlap-name">Name:</label>
+                <input type="text" id="overlap-name" name="name"><br>
+                <label for="overlap-email">Email:</label>
+                <input type="email" id="overlap-email" name="email"><br>
+                <button type="submit">Submit</button>
+            </form>
+            <!-- Popup that overlaps the form -->
+            <div style="position: absolute; top: 40px; left: 70px; width: 260px; height: 120px; background: rgba(120,0,0,0.88); color: #fff; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.18); pointer-events: auto;">
+                Popup: This blocks the form below
+            </div>
+        </div>
+</body>
+</html>

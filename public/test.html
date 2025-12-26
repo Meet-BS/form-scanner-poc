@@ -1,0 +1,170 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>ShopMax - 2500 Broken Links Test Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body { background: #f8f9fa; font-family: Arial, sans-serif; }
+        .product-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .product-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .broken-link { color: #d9534f !important; text-decoration: line-through; }
+        .broken-img { filter: grayscale(1) opacity(0.4); border: 2px dashed #d9534f; }
+        .broken-cta { background-color: #d9534f !important; }
+        .working-cta { background-color: #5cb85c; }
+        .product-title { font-weight: bold; margin: 10px 0; }
+        .product-price { color: #28a745; font-size: 18px; margin-bottom: 15px; }
+        .status-badge { 
+            position: absolute; 
+            top: 5px; 
+            right: 5px; 
+            background: #d9534f; 
+            color: white; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-size: 11px;
+        }
+        .container-products { max-width: 1400px; margin: 0 auto; }
+        .section-title { 
+            background: #337ab7; 
+            color: white; 
+            padding: 15px; 
+            margin: 20px 0; 
+            border-radius: 5px; 
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with counters -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">ShopMax - Broken Links Test</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" style="pointer-events:none;">
+                    <span class="label label-danger" id="broken-links-count">Broken Links: 234</span></a></li>
+                <li><a href="#" style="pointer-events:none;">
+                    <span class="label label-warning" id="broken-ctas-count">Broken CTAs: 9</span></a></li>
+                <li><a href="#" style="pointer-events:none;">
+                    <span class="label label-info" id="broken-images-count">Broken Images: 11</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-products" style="margin-top: 80px;">
+        <div class="jumbotron text-center">
+            <h1>Broken Elements Test Page</h1>
+            <p>This page contains <strong><span id="total-broken-links">234</span> broken links</strong>, <strong><span id="total-broken-ctas">9</span> broken CTAs</strong>, and <strong><span id="total-broken-images">11</span> broken images</strong> for testing purposes.</p>
+            <p>All elements are statically rendered (no JavaScript generation) to ensure crawler detection.</p>
+        </div>
+
+        <!-- Products Grid - First 100 products with pattern -->
+        <div class="section-title">
+            <h2>Products 1-100 (Sample of 2500 total)</h2>
+        </div>
+
+        <!-- Additional Static Broken Links Section -->
+        <div class="section-title">
+            <h2>Additional Static Broken Links for Crawler Detection</h2>
+        </div>
+
+        <!-- Batch 2: More broken links with various status codes (101-200) -->
+        <div class="section-title">
+            <h2>Batch 2: More Broken Links (101-200)</h2>
+        </div>
+
+        <!-- Additional Broken Images and CTAs -->
+        <div class="section-title">
+            <h2>More Broken Images and CTAs</h2>
+        </div>
+        
+        <div class="well">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>More Broken Images (for 500 total)</h4>
+                    <img src="/images/missing4.jpg" class="broken-img" alt="Broken Image 4" style="width:100px;height:75px;"><br>
+                    <img src="/images/missing5.jpg" class="broken-img" alt="Broken Image 5" style="width:100px;height:75px;"><br>
+                    <img src="/images/missing6.jpg" class="broken-img" alt="Broken Image 6" style="width:100px;height:75px;"><br>
+                    <img src="/images/missing7.jpg" class="broken-img" alt="Broken Image 7" style="width:100px;height:75px;"><br>
+                    <img src="/images/missing8.jpg" class="broken-img" alt="Broken Image 8" style="width:100px;height:75px;"><br>
+                </div>
+                <div class="col-md-6">
+                    <h4>More Broken CTAs (for 250 total)</h4>
+                    <button class="btn broken-cta" onclick="window.location.href='https://httpstat.us/404?cta=static4'">Broken CTA 4</button><br><br>
+                    <button class="btn broken-cta" onclick="window.location.href='https://httpstat.us/429?cta=static5'">Broken CTA 5</button><br><br>
+                    <button class="btn broken-cta" onclick="window.location.href='https://httpstat.us/500?cta=static6'">Broken CTA 6</button><br><br>
+                    <button class="btn broken-cta" onclick="window.location.href='https://httpstat.us/503?cta=static7'">Broken CTA 7</button><br><br>
+                    <button class="btn broken-cta" onclick="window.location.href='https://httpstat.us/502?cta=static8'">Broken CTA 8</button><br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <p><strong>Note:</strong> This page demonstrates the first 12 products. In a complete implementation, you would continue this pattern for all 2500 products with:</p>
+            <ul>
+                <li>Every product having a broken link (using different HTTP status codes)</li>
+                <li>Every 5th product having a broken image</li>
+                <li>Every 10th product having a broken CTA</li>
+                <li>All other elements working properly</li>
+            </ul>
+            <p>All links are static HTML (no JavaScript generation) to ensure crawler detection.</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to count actual broken elements on the page
+        function updateCounters() {
+            // Count broken links (elements with broken-link class or href containing httpstat.us)
+            const brokenLinks = document.querySelectorAll('a.broken-link, a[href*="httpstat.us"]').length;
+            
+            // Count broken CTAs (buttons with broken-cta class or onclick containing httpstat.us)
+            const brokenCTAs = document.querySelectorAll('button.broken-cta, button[onclick*="httpstat.us"]').length;
+            
+            // Count broken images (images with broken-img class or src containing /images/ or nonexistent)
+            const brokenImages = document.querySelectorAll('img.broken-img, img[src*="/images/"], img[src*="nonexistent"], img[src*="missing"]').length;
+            
+            // Update navigation counters
+            document.getElementById('broken-links-count').textContent = `Broken Links: ${brokenLinks}`;
+            document.getElementById('broken-ctas-count').textContent = `Broken CTAs: ${brokenCTAs}`;
+            document.getElementById('broken-images-count').textContent = `Broken Images: ${brokenImages}`;
+            
+            // Update jumbotron text
+            document.getElementById('total-broken-links').textContent = brokenLinks;
+            document.getElementById('total-broken-ctas').textContent = brokenCTAs;
+            document.getElementById('total-broken-images').textContent = brokenImages;
+            
+            console.log(`Counted: ${brokenLinks} broken links, ${brokenCTAs} broken CTAs, ${brokenImages} broken images`);
+        }
+        
+        // Update counters when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounters();
+        });
+        
+        // Also update after a short delay to ensure all content is loaded
+        window.addEventListener('load', function() {
+            setTimeout(updateCounters, 500);
+        });
+        
+        // Function for working CTAs
+        function addToCart(productId) {
+            alert('Product ' + productId + ' added to cart successfully!');
+        }
+    </script>
+
+
+</body></html>

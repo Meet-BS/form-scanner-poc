@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Wizard Form</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px 40px;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.25);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+            color: #1f2933;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .steps::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #e5e7eb;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            flex: 1;
+        }
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            border: 2px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .step.active .step-circle {
+            border-color: #4f46e5;
+            background: #4f46e5;
+            color: #fff;
+        }
+        .step.completed .step-circle {
+            border-color: #16a34a;
+            background: #16a34a;
+            color: #fff;
+        }
+        .step-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 11px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 1px #4f46e533;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        .btn {
+            border-radius: 999px;
+            padding: 10px 18px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .btn-primary {
+            background: #4f46e5;
+            color: #fff;
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .review-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px 18px;
+            font-size: 14px;
+            border: 1px dashed #d1d5db;
+        }
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+        .review-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+        .review-value {
+            color: #111827;
+        }
+        .message {
+            margin-top: 18px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+        }
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/" style="display:inline-block;margin-bottom:14px;color:#4f46e5;text-decoration:none;font-size:13px;">← Back to home</a>
+    <h1>Multi-Step Wizard Form</h1>
+    <p class="subtitle">Tests scanners that need to understand a single logical form split across multiple steps with hidden sections.</p>
+
+    <div class="steps" aria-hidden="true">
+        <div class="step active" data-step-indicator="1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Profile</div>
+        </div>
+        <div class="step" data-step-indicator="2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Address</div>
+        </div>
+        <div class="step" data-step-indicator="3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Review</div>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <form id="wizardForm">
+        <div class="form-step active" data-step="1">
+            <div class="form-group">
+                <label for="wiz_firstName">First name *</label>
+                <input id="wiz_firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="wiz_lastName">Last name *</label>
+                <input id="wiz_lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="wiz_email">Email *</label>
+                <input id="wiz_email" name="email" type="email" required>
+            </div>
+        </div>
+
+        <div class="form-step" data-step="2">
+            <div class="form-group">
+                <label for="wiz_street">Street address *</label>
+                <input id="wiz_street" name="street" required>
+            </div>
+            <div class="form-group">
+                <label for="wiz_city">City *</label>
+                <input id="wiz_city" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="wiz_country">Country *</label>
+                <select id="wiz_country" name="country" required>
+                    <option value="">Select country</option>
+                    <option value="us">United States</option>
+                    <option value="ca">Canada</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="in">India</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-step" data-step="3">
+            <p style="font-size:13px;color:#6b7280;margin-bottom:10px;">Review your details before submitting:</p>
+            <div class="review-box" id="reviewBox">
+                <!-- Filled in via JS before final submit -->
+                <div class="review-row"><span class="review-label">Name</span><span class="review-value" data-review="name">-</span></div>
+                <div class="review-row"><span class="review-label">Email</span><span class="review-value" data-review="email">-</span></div>
+                <div class="review-row"><span class="review-label">Address</span><span class="review-value" data-review="address">-</span></div>
+                <div class="review-row"><span class="review-label">Country</span><span class="review-value" data-review="country">-</span></div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button type="button" class="btn btn-secondary" id="prevStepBtn">Back</button>
+            <button type="button" class="btn btn-primary" id="nextStepBtn">Next step</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">Submit form</button>
+        </div>
+    </form>
+</div>
+
+<script>
+(function() {
+    const form = document.getElementById('wizardForm');
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const indicators = Array.from(document.querySelectorAll('.step'));
+    const nextBtn = document.getElementById('nextStepBtn');
+    const prevBtn = document.getElementById('prevStepBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageEl = document.getElementById('message');
+    let currentStep = 0;
+
+    function showStep(index) {
+        steps.forEach((step, i) => {
+            step.classList.toggle('active', i === index);
+        });
+        indicators.forEach((ind, i) => {
+            ind.classList.toggle('active', i === index);
+            ind.classList.toggle('completed', i < index);
+        });
+
+        prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
+        nextBtn.style.display = index === steps.length - 1 ? 'none' : 'inline-flex';
+        submitBtn.style.display = index === steps.length - 1 ? 'inline-flex' : 'none';
+
+        if (index === steps.length - 1) {
+            populateReview();
+        }
+    }
+
+    function validateStep(index) {
+        const step = steps[index];
+        const inputs = Array.from(step.querySelectorAll('input, select'));
+        for (const input of inputs) {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function populateReview() {
+        const firstName = form.firstName.value.trim();
+        const lastName = form.lastName.value.trim();
+        const email = form.email.value.trim();
+        const street = form.street.value.trim();
+        const city = form.city.value.trim();
+        const countrySelect = form.country;
+        const countryLabel = countrySelect.options[countrySelect.selectedIndex]?.text || '';
+
+        document.querySelector('[data-review="name"]').textContent = firstName + ' ' + lastName;
+        document.querySelector('[data-review="email"]').textContent = email;
+        document.querySelector('[data-review="address"]').textContent = street + ', ' + city;
+        document.querySelector('[data-review="country"]').textContent = countryLabel;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (!validateStep(currentStep)) return;
+        if (currentStep < steps.length - 1) {
+            currentStep += 1;
+            showStep(currentStep);
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep -= 1;
+            showStep(currentStep);
+        }
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateStep(currentStep)) return;
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch('/api/submit-wizard-form', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            messageEl.style.display = 'block';
+            if (result.success) {
+                messageEl.textContent = '✅ ' + result.message;
+                messageEl.className = 'message success';
+                form.reset();
+                currentStep = 0;
+                showStep(currentStep);
+            } else {
+                messageEl.textContent = '❌ ' + (result.message || 'Submission failed');
+                messageEl.className = 'message error';
+            }
+        } catch (err) {
+            messageEl.style.display = 'block';
+            messageEl.textContent = '❌ Network error while submitting form';
+            messageEl.className = 'message error';
+        }
+    });
+
+    // init
+    showStep(currentStep);
+})();
+</script>
+</body>
+</html>
