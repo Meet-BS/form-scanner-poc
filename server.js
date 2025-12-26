@@ -69,6 +69,30 @@ app.get('/aria-form', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'aria-form.html'));
 });
 
+app.get('/conditional-disabled-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'conditional-disabled-form.html'));
+});
+
+app.get('/autosave-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'autosave-form.html'));
+});
+
+app.get('/masked-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'masked-form.html'));
+});
+
+app.get('/grid-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'grid-form.html'));
+});
+
+app.get('/multi-form-wizard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'multi-form-wizard.html'));
+});
+
+app.get('/rtl-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'rtl-form.html'));
+});
+
 app.get('/scanner-test', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'scanner-test.html'));
 });
@@ -206,6 +230,52 @@ app.post('/api/submit-collection-form', (req, res) => {
 app.post('/api/submit-aria-form', (req, res) => {
   console.log('ARIA form submitted:', req.body);
   res.json({ success: true, message: 'ARIA form captured for QA.' });
+});
+
+// Conditional / disabled fields form
+app.post('/api/submit-conditional-disabled', (req, res) => {
+  console.log('Conditional/disabled form submitted:', req.body);
+  res.json({ success: true, message: 'Conditional/disabled form captured for QA.' });
+});
+
+// Autosave profile (no submit button)
+app.post('/api/autosave-profile', (req, res) => {
+  console.log('Autosave profile payload:', req.body);
+  res.json({ success: true, message: 'Draft saved.' });
+});
+
+// Masked / formatted inputs form
+app.post('/api/submit-masked-form', (req, res) => {
+  console.log('Masked form submitted:', req.body);
+  res.json({ success: true, message: 'Masked form captured for QA.' });
+});
+
+// Multi-column grid form
+app.post('/api/submit-grid-form', (req, res) => {
+  console.log('Grid form submitted:', req.body);
+  res.json({ success: true, message: 'Grid form captured for QA.' });
+});
+
+// Multi-form wizard steps
+app.post('/api/wizard-step-1', (req, res) => {
+  console.log('Wizard step 1 submitted:', req.body);
+  res.json({ success: true, message: 'Step 1 saved.' });
+});
+
+app.post('/api/wizard-step-2', (req, res) => {
+  console.log('Wizard step 2 submitted:', req.body);
+  res.json({ success: true, message: 'Step 2 saved.' });
+});
+
+app.post('/api/wizard-step-3', (req, res) => {
+  console.log('Wizard step 3 submitted:', req.body);
+  res.json({ success: true, message: 'Signup complete.' });
+});
+
+// RTL localized form
+app.post('/api/submit-rtl-form', (req, res) => {
+  console.log('RTL form submitted:', req.body);
+  res.json({ success: true, message: 'تم استلام النموذج بنجاح.' });
 });
 
 // Start server

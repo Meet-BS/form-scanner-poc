@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditional / Disabled Fields Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #facc15, #eab308);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #fefce8;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; color: #854d0e; }
+    .subtitle { font-size: 14px; color: #a16207; margin-bottom: 18px; }
+    .note {
+      background: #fef3c7;
+      border-radius: 12px;
+      border: 1px dashed #facc15;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #854d0e;
+      margin-bottom: 20px;
+    }
+    form { background: #fffbeb; border-radius: 14px; border: 1px solid #facc15; padding: 16px 14px 18px; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #854d0e; font-weight: 600; }
+    input, select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #facc15;
+      font-size: 13px;
+      background: #fefce8;
+    }
+    input:disabled, select:disabled {
+      background: #f3f4f6;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+    input:focus, select:focus { outline: none; border-color: #d97706; box-shadow: 0 0 0 1px #d9770644; }
+    .checkbox-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; font-size: 13px; color: #854d0e; }
+    .readonly-field {
+      background: #fef3c7;
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 13px;
+      border: 1px dashed #facc15;
+      color: #92400e;
+    }
+    .actions { margin-top: 14px; display: flex; justify-content: flex-end; gap: 10px; }
+    button { border-radius: 999px; padding: 8px 16px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-secondary { background: #fef3c7; color: #854d0e; }
+    .btn-primary { background: #eab308; color: #422006; }
+    .message { margin-top: 14px; padding: 9px 11px; border-radius: 8px; font-size: 13px; display: none; }
+    .message.success { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .message.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#a16207;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Conditional / Disabled Fields</h1>
+  <p class="subtitle">Tests scanners that must distinguish always-disabled fields from conditionally enabled ones and readonly summaries.</p>
+
+  <div class="note">
+    Some fields are permanently disabled (should be ignored), while others become enabled only when toggles are checked.
+  </div>
+
+  <form id="conditionalDisabledForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cd_name">Full name *</label>
+        <input id="cd_name" name="fullName" required>
+      </div>
+      <div class="form-group">
+        <label for="cd_email">Email *</label>
+        <input id="cd_email" name="email" type="email" required>
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="cd_enableBusiness" name="enableBusiness">
+      <label for="cd_enableBusiness" style="margin:0;font-weight:500;">I am registering on behalf of a business</label>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cd_company">Company name (enabled only if business)</label>
+        <input id="cd_company" name="company" disabled>
+      </div>
+      <div class="form-group">
+        <label for="cd_vat">VAT / Tax ID (enabled only if business)</label>
+        <input id="cd_vat" name="vatId" disabled>
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="cd_enableAddress" name="enableAddress">
+      <label for="cd_enableAddress" style="margin:0;font-weight:500;">Add shipping address</label>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cd_address">Street address</label>
+        <input id="cd_address" name="address" disabled>
+      </div>
+      <div class="form-group">
+        <label for="cd_city">City</label>
+        <input id="cd_city" name="city" disabled>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cd_plan">Plan (always enabled)</label>
+        <select id="cd_plan" name="plan">
+          <option value="basic">Basic</option>
+          <option value="pro">Pro</option>
+          <option value="enterprise">Enterprise</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Total (readonly summary)</label>
+        <div id="cd_total" class="readonly-field" aria-readonly="true">$0.00</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cd_locked">Locked internal code (permanently disabled)</label>
+        <input id="cd_locked" name="internalCode" value="INTERNAL-ONLY" disabled>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="reset" class="btn-secondary">Reset</button>
+      <button type="submit" class="btn-primary">Submit</button>
+    </div>
+
+    <div id="cd_message" class="message"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('conditionalDisabledForm');
+  const enableBusiness = document.getElementById('cd_enableBusiness');
+  const enableAddress = document.getElementById('cd_enableAddress');
+  const company = document.getElementById('cd_company');
+  const vat = document.getElementById('cd_vat');
+  const address = document.getElementById('cd_address');
+  const city = document.getElementById('cd_city');
+  const plan = document.getElementById('cd_plan');
+  const total = document.getElementById('cd_total');
+  const msg = document.getElementById('cd_message');
+
+  function updateBusiness() {
+    const enabled = enableBusiness.checked;
+    company.disabled = !enabled;
+    vat.disabled = !enabled;
+  }
+
+  function updateAddress() {
+    const enabled = enableAddress.checked;
+    address.disabled = !enabled;
+    city.disabled = !enabled;
+  }
+
+  function updateTotal() {
+    let base = 0;
+    const planVal = plan.value;
+    if (planVal === 'basic') base = 10;
+    if (planVal === 'pro') base = 25;
+    if (planVal === 'enterprise') base = 60;
+    if (enableBusiness.checked) base += 15;
+    if (enableAddress.checked) base += 5;
+    total.textContent = `$${base.toFixed(2)}`;
+  }
+
+  enableBusiness.addEventListener('change', () => {
+    updateBusiness();
+    updateTotal();
+  });
+  enableAddress.addEventListener('change', () => {
+    updateAddress();
+    updateTotal();
+  });
+  plan.addEventListener('change', updateTotal);
+
+  updateBusiness();
+  updateAddress();
+  updateTotal();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.total = total.textContent;
+
+    try {
+      const res = await fetch('/api/submit-conditional-disabled', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      msg.style.display = 'block';
+      msg.className = 'message ' + (result.success ? 'success' : 'error');
+      msg.textContent = (result.success ? '✅ ' : '❌ ') + (result.message || 'Submission result');
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.className = 'message error';
+      msg.textContent = '❌ Network error while submitting form.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

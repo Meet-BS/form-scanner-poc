@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masked / Formatted Inputs</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #fdf2f8;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; color: #9d174d; }
+    .subtitle { font-size: 14px; color: #be185d; margin-bottom: 18px; }
+    .note {
+      background: #fce7f3;
+      border-radius: 12px;
+      border: 1px dashed #f97316;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #9d174d;
+      margin-bottom: 20px;
+    }
+    form { background: #fdf2f8; border-radius: 14px; border: 1px solid #fb7185; padding: 16px 14px 18px; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #9d174d; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #fb7185;
+      font-size: 13px;
+      background: #fef2f2;
+    }
+    input:focus { outline: none; border-color: #ec4899; box-shadow: 0 0 0 1px #ec489944; }
+    .hint { font-size: 11px; color: #9d174d; margin-top: 3px; }
+    .actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+    button { border-radius: 999px; padding: 8px 16px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; background: #ec4899; color: #fdf2f8; }
+    .message { margin-top: 14px; padding: 9px 11px; border-radius: 8px; font-size: 13px; display: none; }
+    .message.success { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .message.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#be185d;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Masked / Formatted Inputs</h1>
+  <p class="subtitle">Tests scanners that need to understand fields with heavy input formatting and masks.</p>
+
+  <div class="note">
+    These inputs simulate popular masking libraries via <code>data-mask</code> and formatting logic. The underlying value is unformatted.
+  </div>
+
+  <form id="maskedForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="mf_phone">Phone number *</label>
+        <input id="mf_phone" name="phone" data-mask="(999) 999-9999" required>
+        <div class="hint">Masked as (123) 456-7890, stored as digits only.</div>
+      </div>
+      <div class="form-group">
+        <label for="mf_card">Credit card *</label>
+        <input id="mf_card" name="card" data-mask="9999 9999 9999 9999" required>
+        <div class="hint">Masked with spaces, stored as digits only.</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="mf_exp">Expiry (MM/YY) *</label>
+        <input id="mf_exp" name="expiry" data-mask="99/99" required>
+      </div>
+      <div class="form-group">
+        <label for="mf_amount">Amount (currency)</label>
+        <input id="mf_amount" name="amount" data-format="currency">
+        <div class="hint">Displays $1,234.56 but underlying value is 1234.56</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit">Submit payment details</button>
+    </div>
+
+    <div id="mf_message" class="message"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('maskedForm');
+  const msg = document.getElementById('mf_message');
+
+  function onlyDigits(value) {
+    return value.replace(/\D/g, '');
+  }
+
+  function applyMask(value, mask) {
+    const digits = onlyDigits(value);
+    let result = '';
+    let di = 0;
+    for (let i = 0; i < mask.length; i++) {
+      if (mask[i] === '9') {
+        if (di < digits.length) {
+          result += digits[di++];
+        } else {
+          break;
+        }
+      } else {
+        result += mask[i];
+      }
+    }
+    return result;
+  }
+
+  function formatCurrency(value) {
+    const digits = value.replace(/[^0-9.]/g, '');
+    if (!digits) return '';
+    const num = parseFloat(digits);
+    if (isNaN(num)) return '';
+    return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+
+  form.addEventListener('input', (e) => {
+    const target = e.target;
+    const mask = target.getAttribute('data-mask');
+    const fmt = target.getAttribute('data-format');
+
+    if (mask) {
+      const caret = target.selectionStart;
+      target.value = applyMask(target.value, mask);
+      target.selectionStart = target.selectionEnd = caret;
+    } else if (fmt === 'currency') {
+      const caret = target.selectionStart;
+      target.value = formatCurrency(target.value);
+      target.selectionStart = target.selectionEnd = caret;
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const raw = Object.fromEntries(new FormData(form).entries());
+    const payload = {
+      phone: onlyDigits(raw.phone || ''),
+      card: onlyDigits(raw.card || ''),
+      expiry: onlyDigits(raw.expiry || ''),
+      amount: (raw.amount || '').replace(/[^0-9.]/g, '') || null
+    };
+
+    try {
+      const res = await fetch('/api/submit-masked-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      msg.style.display = 'block';
+      msg.className = 'message ' + (result.success ? 'success' : 'error');
+      msg.textContent = (result.success ? '✅ ' : '❌ ') + (result.message || 'Submission result');
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.className = 'message error';
+      msg.textContent = '❌ Network error while submitting masked form.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

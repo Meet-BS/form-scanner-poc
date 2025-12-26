@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autosave Profile (No Submit Button)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ecfeff;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; color: #075985; }
+    .subtitle { font-size: 14px; color: #0369a1; margin-bottom: 18px; }
+    .note {
+      background: #e0f2fe;
+      border-radius: 12px;
+      border: 1px dashed #38bdf8;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #075985;
+      margin-bottom: 20px;
+    }
+    .field-container { background: #f0f9ff; border-radius: 14px; border: 1px solid #bae6fd; padding: 16px 14px 18px; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .form-group { flex: 1; }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #075985; font-weight: 600; }
+    input, textarea {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #bae6fd;
+      font-size: 13px;
+      background: #ecfeff;
+    }
+    input:focus, textarea:focus { outline: none; border-color: #0284c7; box-shadow: 0 0 0 1px #0284c744; }
+    textarea { min-height: 80px; resize: vertical; }
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #0f172a;
+    }
+    .status span { font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" style="display:inline-block;margin-bottom:12px;color:#0369a1;text-decoration:none;font-size:13px;">← Back to home</a>
+  <h1>Autosave Profile (No Submit Button)</h1>
+  <p class="subtitle">Tests scanners that rely on traditional submit buttons versus watching autosave network calls.</p>
+
+  <div class="note">
+    This profile form has <strong>no explicit submit button</strong>. Changes are saved automatically a short time after the user stops typing.
+  </div>
+
+  <form id="autosaveForm">
+    <div class="field-container">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="as_name">Display name</label>
+          <input id="as_name" name="displayName" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="as_title">Title</label>
+          <input id="as_title" name="title" autocomplete="off">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="as_bio">Bio</label>
+        <textarea id="as_bio" name="bio"></textarea>
+      </div>
+    </div>
+
+    <div class="status" id="as_status">Status: <span>Not saved</span></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('autosaveForm');
+  const status = document.getElementById('as_status').querySelector('span');
+  let timeoutId = null;
+
+  async function saveDraft() {
+    const data = Object.fromEntries(new FormData(form).entries());
+    status.textContent = 'Saving...';
+
+    try {
+      const res = await fetch('/api/autosave-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (result.success) {
+        status.textContent = 'Saved';
+      } else {
+        status.textContent = 'Error saving';
+      }
+    } catch (err) {
+      status.textContent = 'Network error while saving';
+    }
+  }
+
+  function scheduleSave() {
+    if (timeoutId) clearTimeout(timeoutId);
+    status.textContent = 'Changes detected...';
+    timeoutId = setTimeout(saveDraft, 800);
+  }
+
+  form.addEventListener('input', scheduleSave);
+})();
+</script>
+</body>
+</html>
