@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mixed Light + Shadow Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #22d3ee, #0f172a);
+      padding: 40px 16px;
+      min-height: 100vh;
+      color: #e5e7eb;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #020617;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    h1 { font-size: 24px; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #9ca3af; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #e5e7eb; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #4b5563;
+      font-size: 13px;
+      background: #020617;
+      color: #e5e7eb;
+    }
+    input:focus { outline: none; border-color: #22d3ee; box-shadow: 0 0 0 1px #22d3ee66; }
+    button {
+      border-radius: 999px;
+      padding: 8px 16px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #22d3ee;
+      color: #020617;
+      margin-top: 10px;
+    }
+    .message { margin-top: 14px; font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/labs" style="display:inline-block;margin-bottom:12px;color:#22d3ee;text-decoration:none;font-size:13px;">← Back to Form Labs</a>
+  <h1>Mixed Light + Shadow Form</h1>
+  <p class="subtitle">Tests scanners with one logical form whose fields live partly in light DOM and partly in a shadowRoot.</p>
+
+  <form id="mixedShadowForm">
+    <div class="form-group" style="margin-bottom:10px;">
+      <label for="ms_name">Full name *</label>
+      <input id="ms_name" name="fullName" required>
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label for="ms_email">Email *</label>
+      <input id="ms_email" name="email" type="email" required>
+    </div>
+
+    <shadow-address></shadow-address>
+
+    <button type="submit">Submit mixed form</button>
+    <div id="ms_message" class="message"></div>
+  </form>
+</div>
+
+<script>
+class ShadowAddress extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+
+    const wrapper = document.createElement('div');
+    wrapper.style.marginTop = '10px';
+    wrapper.style.padding = '10px 10px 12px';
+    wrapper.style.borderRadius = '10px';
+    wrapper.style.border = '1px solid #4b5563';
+
+    const title = document.createElement('div');
+    title.textContent = 'Address (inside shadow DOM)';
+    title.style.fontSize = '12px';
+    title.style.color = '#9ca3af';
+    title.style.marginBottom = '6px';
+
+    const style = document.createElement('style');
+    style.textContent = `
+      label { display:block;font-size:12px;margin-bottom:4px;color:#e5e7eb;font-weight:600; }
+      input { width:100%;padding:7px 9px;border-radius:8px;border:1px solid #4b5563;font-size:13px;background:#020617;color:#e5e7eb; }
+      input:focus { outline:none;border-color:#22d3ee;box-shadow:0 0 0 1px #22d3ee66; }
+      .row { margin-bottom:8px; }
+    `;
+
+    const row1 = document.createElement('div');
+    row1.className = 'row';
+    const l1 = document.createElement('label');
+    l1.textContent = 'Street *';
+    l1.setAttribute('for', 'ms_street');
+    const i1 = document.createElement('input');
+    i1.id = 'ms_street';
+    i1.name = 'street';
+    i1.required = true;
+
+    const row2 = document.createElement('div');
+    row2.className = 'row';
+    const l2 = document.createElement('label');
+    l2.textContent = 'City *';
+    l2.setAttribute('for', 'ms_city');
+    const i2 = document.createElement('input');
+    i2.id = 'ms_city';
+    i2.name = 'city';
+    i2.required = true;
+
+    row1.appendChild(l1); row1.appendChild(i1);
+    row2.appendChild(l2); row2.appendChild(i2);
+
+    wrapper.appendChild(title);
+    wrapper.appendChild(row1);
+    wrapper.appendChild(row2);
+
+    shadow.appendChild(style);
+    shadow.appendChild(wrapper);
+  }
+}
+
+customElements.define('shadow-address', ShadowAddress);
+
+(function() {
+  const form = document.getElementById('mixedShadowForm');
+  const msg = document.getElementById('ms_message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    msg.textContent = 'Submitting...';
+
+    try {
+      const res = await fetch('/api/submit-mixed-shadow-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      msg.textContent = result.success ? 'Submitted OK' : 'Server error';
+    } catch (err) {
+      msg.textContent = 'Network error while submitting';
+    }
+  });
+})();
+</script>
+</body>
+</html>

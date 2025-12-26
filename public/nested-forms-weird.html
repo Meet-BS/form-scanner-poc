@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nested / Invalid Forms</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f97316, #b91c1c);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fef2f2;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    h1 { font-size: 24px; margin-bottom: 6px; color: #7f1d1d; }
+    .subtitle { font-size: 14px; color: #b91c1c; margin-bottom: 18px; }
+    .note {
+      background: #fee2e2;
+      border-radius: 12px;
+      border: 1px dashed #f97316;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #7f1d1d;
+      margin-bottom: 20px;
+    }
+    label { display: block; font-size: 12px; margin-bottom: 4px; color: #7f1d1d; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+      font-size: 13px;
+      background: #fef2f2;
+    }
+    input:focus { outline: none; border-color: #b91c1c; box-shadow: 0 0 0 1px #b91c1c44; }
+    button {
+      border-radius: 999px;
+      padding: 8px 16px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #b91c1c;
+      color: #fef2f2;
+      margin-top: 10px;
+    }
+    .message { margin-top: 14px; font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/labs" style="display:inline-block;margin-bottom:12px;color:#b91c1c;text-decoration:none;font-size:13px;">← Back to Form Labs</a>
+  <h1>Nested / Invalid Forms</h1>
+  <p class="subtitle">Intentionally invalid markup with nested forms and repeated IDs to test robustness.</p>
+
+  <div class="note">
+    This page includes:
+    <ul>
+      <li>Nested <code>&lt;form&gt;</code> elements (invalid HTML but seen in the wild).</li>
+      <li>Multiple inputs sharing the same <code>id</code>.</li>
+    </ul>
+  </div>
+
+  <form id="outerForm">
+    <label for="dup_id">Outer email *</label>
+    <input id="dup_id" name="outerEmail" type="email" required>
+
+    <!-- Nested form (invalid) -->
+    <form id="innerForm">
+      <label for="dup_id">Inner email *</label>
+      <input id="dup_id" name="innerEmail" type="email" required>
+      <button type="submit">Submit inner form</button>
+    </form>
+
+    <button type="submit">Submit outer form</button>
+
+    <div id="nf_message" class="message"></div>
+  </form>
+</div>
+
+<script>
+(function() {
+  const outer = document.getElementById('outerForm');
+  const inner = document.getElementById('innerForm');
+  const msg = document.getElementById('nf_message');
+
+  function logAndSubmit(event, label) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    msg.textContent = label + ' submitting...';
+    fetch('/api/submit-nested-forms-weird', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: label, data })
+    }).then(r => r.json()).then(result => {
+      msg.textContent = label + ': ' + (result.success ? 'OK' : 'Error');
+    }).catch(() => {
+      msg.textContent = label + ': network error';
+    });
+  }
+
+  outer.addEventListener('submit', (e) => logAndSubmit(e, 'Outer form'));
+  inner.addEventListener('submit', (e) => logAndSubmit(e, 'Inner form'));
+})();
+</script>
+</body>
+</html>

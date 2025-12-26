@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Labs - Experimental Scenarios</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #4f46e5, #0f172a);
+      padding: 40px 20px;
+      min-height: 100vh;
+      color: #e5e7eb;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #020617;
+      border-radius: 18px;
+      padding: 32px 28px 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    h1 { font-size: 26px; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #9ca3af; margin-bottom: 22px; }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: #a5b4fc;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .card {
+      background: linear-gradient(135deg, #020617, #111827);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-decoration: none;
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.4);
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      font-size: 13px;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.8);
+      border-color: #4f46e5;
+    }
+    .card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #a5b4fc;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #4f46e5;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">← Back to main suite</a>
+  <h1>Form Labs</h1>
+  <p class="subtitle">Experimental and edge-case forms that go beyond the main test suite.</p>
+
+  <div class="grid">
+    <!-- Cards for new exotic forms will be listed here via links -->
+    <a href="/enter-key-form" class="card">
+      <h3>Enter-Key Search Form</h3>
+      <p>Single-input form that submits only via Enter key listener, no visible submit button.</p>
+      <span class="badge">BEHAVIORAL</span>
+    </a>
+
+    <a href="/runtime-created-form" class="card">
+      <h3>Runtime-Created Form</h3>
+      <p>Form and fields are created entirely via JavaScript after page load.</p>
+      <span class="badge">DYNAMIC DOM</span>
+    </a>
+
+    <a href="/nested-forms-weird" class="card">
+      <h3>Nested / Duplicate-ID Forms</h3>
+      <p>Intentionally invalid HTML with nested forms and repeated IDs to test robustness.</p>
+      <span class="badge">INVALID HTML</span>
+    </a>
+
+    <a href="/mixed-shadow-form" class="card">
+      <h3>Mixed Light + Shadow Form</h3>
+      <p>One logical form split between light DOM fields and a shadow DOM component.</p>
+      <span class="badge">HYBRID</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>

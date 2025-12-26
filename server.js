@@ -93,6 +93,27 @@ app.get('/rtl-form', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'rtl-form.html'));
 });
 
+// Labs hub and exotic forms
+app.get('/labs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'labs-index.html'));
+});
+
+app.get('/enter-key-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'enter-key-form.html'));
+});
+
+app.get('/runtime-created-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'runtime-created-form.html'));
+});
+
+app.get('/nested-forms-weird', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'nested-forms-weird.html'));
+});
+
+app.get('/mixed-shadow-form', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'mixed-shadow-form.html'));
+});
+
 app.get('/scanner-test', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'scanner-test.html'));
 });
@@ -276,6 +297,27 @@ app.post('/api/wizard-step-3', (req, res) => {
 app.post('/api/submit-rtl-form', (req, res) => {
   console.log('RTL form submitted:', req.body);
   res.json({ success: true, message: 'تم استلام النموذج بنجاح.' });
+});
+
+// Labs / exotic API endpoints
+app.post('/api/submit-enter-key-form', (req, res) => {
+  console.log('Enter-key form submitted:', req.body);
+  res.json({ success: true, message: 'Enter-key form captured for QA.' });
+});
+
+app.post('/api/submit-runtime-created-form', (req, res) => {
+  console.log('Runtime-created form submitted:', req.body);
+  res.json({ success: true, message: 'Runtime-created form captured for QA.' });
+});
+
+app.post('/api/submit-nested-forms-weird', (req, res) => {
+  console.log('Nested/invalid form submitted:', req.body);
+  res.json({ success: true, message: 'Nested/invalid form captured for QA.' });
+});
+
+app.post('/api/submit-mixed-shadow-form', (req, res) => {
+  console.log('Mixed shadow/light form submitted:', req.body);
+  res.json({ success: true, message: 'Mixed shadow/light form captured for QA.' });
 });
 
 // Start server

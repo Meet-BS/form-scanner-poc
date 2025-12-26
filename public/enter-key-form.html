@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter-Key Search Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      padding: 40px 16px;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #ecfdf3;
+      border-radius: 18px;
+      padding: 28px 24px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    h1 { font-size: 24px; margin-bottom: 6px; color: #064e3b; }
+    .subtitle { font-size: 14px; color: #047857; margin-bottom: 18px; }
+    .note {
+      background: #bbf7d0;
+      border-radius: 12px;
+      border: 1px dashed #22c55e;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #064e3b;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      background: #ecfdf5;
+      border-radius: 999px;
+      border: 1px solid #a7f3d0;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #022c22;
+      outline: none;
+    }
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #022c22;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/labs" style="display:inline-block;margin-bottom:12px;color:#047857;text-decoration:none;font-size:13px;">← Back to Form Labs</a>
+  <h1>Enter-Key Search Form</h1>
+  <p class="subtitle">Tests scanners when the only submit mechanism is the Enter key in an input field.</p>
+
+  <div class="note">
+    There is a <strong>form tag</strong> but <strong>no visible submit button</strong>. Submission happens when the user presses Enter inside the search box.
+  </div>
+
+  <form id="enterKeyForm">
+    <div class="search-box">
+      <span>🔍</span>
+      <input id="ek_query" name="query" placeholder="Type a query and press Enter" autocomplete="off">
+    </div>
+  </form>
+
+  <div class="status" id="ek_status">Status: waiting for input</div>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('enterKeyForm');
+  const input = document.getElementById('ek_query');
+  const status = document.getElementById('ek_status');
+
+  input.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const value = input.value.trim();
+      if (!value) return;
+
+      status.textContent = 'Status: submitting...';
+
+      try {
+        const res = await fetch('/api/submit-enter-key-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: value })
+        });
+        const result = await res.json();
+        status.textContent = 'Status: ' + (result.success ? 'submitted' : 'error');
+      } catch (err) {
+        status.textContent = 'Status: network error';
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
